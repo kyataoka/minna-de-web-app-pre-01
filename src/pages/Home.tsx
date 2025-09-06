@@ -12,16 +12,54 @@ const Home: React.FC = () => {
   const closeInfoModal = () => setIsInfoModalOpen(false);
 
   return (
-    <div style={{ padding: '20px', backgroundColor: 'var(--bg-color)', color: 'var(--text-color)', minHeight: '100vh', transition: 'background-color 0.3s ease, color 0.3s ease' }}>
-      <h1>ホームページ</h1>
-      <p>React Routerを使ったページ遷移のデモアプリケーションです。</p>
-      <p>ナビゲーションメニューから他のページに移動できます。</p>
+    <div style={{ 
+      padding: '20px', 
+      backgroundColor: 'var(--bg-color)', 
+      color: 'var(--text-color)', 
+      minHeight: '100vh', 
+      transition: 'background-color 0.3s ease, color 0.3s ease' 
+    }}>
+      <div style={{
+        animation: 'fadeInUp 0.8s ease-out forwards',
+        opacity: 0,
+        transform: 'translateY(30px)'
+      }}>
+        <h1>ホームページ</h1>
+      </div>
       
-      <div style={{ marginTop: '30px' }}>
+      <div style={{
+        animation: 'fadeInUp 0.8s ease-out 0.2s forwards',
+        opacity: 0,
+        transform: 'translateY(30px)'
+      }}>
+        <p>React Routerを使ったページ遷移のデモアプリケーションです。</p>
+      </div>
+      
+      <div style={{
+        animation: 'fadeInUp 0.8s ease-out 0.4s forwards',
+        opacity: 0,
+        transform: 'translateY(30px)'
+      }}>
+        <p>ナビゲーションメニューから他のページに移動できます。</p>
+      </div>
+      
+      <div style={{ 
+        marginTop: '30px',
+        animation: 'fadeInUp 0.8s ease-out 0.6s forwards',
+        opacity: 0,
+        transform: 'translateY(30px)'
+      }}>
         <h2>モーダルダイアログのデモ</h2>
         <p>以下のボタンをクリックしてモーダルダイアログを表示できます。</p>
         
-        <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
+        <div style={{ 
+          display: 'flex', 
+          gap: '15px', 
+          marginTop: '20px',
+          animation: 'fadeInUp 0.8s ease-out 0.8s forwards',
+          opacity: 0,
+          transform: 'translateY(30px)'
+        }}>
           <button
             onClick={openModal}
             style={{
@@ -38,13 +76,15 @@ const Home: React.FC = () => {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'var(--button-hover-bg)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 123, 255, 0.3)';
+              e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 123, 255, 0.4)';
+              e.currentTarget.style.filter = 'brightness(1.1)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'var(--button-bg)';
-              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
               e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 123, 255, 0.2)';
+              e.currentTarget.style.filter = 'brightness(1)';
             }}
           >
             基本のモーダルを開く
@@ -66,13 +106,15 @@ const Home: React.FC = () => {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#1e7e34';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 4px 8px rgba(40, 167, 69, 0.3)';
+              e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(40, 167, 69, 0.4)';
+              e.currentTarget.style.filter = 'brightness(1.1)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = '#28a745';
-              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
               e.currentTarget.style.boxShadow = '0 2px 4px rgba(40, 167, 69, 0.2)';
+              e.currentTarget.style.filter = 'brightness(1)';
             }}
           >
             情報モーダルを開く
@@ -150,6 +192,17 @@ const Home: React.FC = () => {
           </div>
         </div>
       </Modal>
+      
+      <style>
+        {`
+          @keyframes fadeInUp {
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };

@@ -71,8 +71,9 @@ const Navigation: React.FC = () => {
   const getLinkHoverStyle = (path: string): React.CSSProperties => ({
     ...getLinkStyle(path),
     backgroundColor: location.pathname === path ? 'var(--nav-active-bg)' : 'var(--card-bg)',
-    transform: 'translateY(-1px)',
-    boxShadow: 'var(--hover-shadow)'
+    transform: 'translateY(-2px) scale(1.05)',
+    boxShadow: '0 8px 16px rgba(25, 118, 210, 0.2), 0 0 20px rgba(25, 118, 210, 0.1)',
+    filter: 'brightness(1.1)'
   });
 
   const hamburgerStyle: React.CSSProperties = {

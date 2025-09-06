@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import type { SearchItem } from '../data/searchData';
+import LoadingSpinner from './LoadingSpinner';
 
 interface SearchResultsProps {
   results: SearchItem[];
@@ -18,12 +19,6 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
     padding: '0 20px'
   }), []);
 
-  const loadingStyle: React.CSSProperties = useMemo(() => ({
-    textAlign: 'center',
-    padding: '40px',
-    fontSize: '16px',
-    color: 'var(--text-color)'
-  }), []);
 
   const noResultsStyle: React.CSSProperties = useMemo(() => ({
     textAlign: 'center',
@@ -43,7 +38,10 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
     marginBottom: '16px',
     boxShadow: 'var(--shadow)',
     transition: 'all 0.3s ease',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    animation: 'slideInUp 0.6s ease-out forwards',
+    opacity: 0,
+    transform: 'translateY(20px) scale(0.95)'
   }), []);
 
   const resultItemHoverStyle: React.CSSProperties = useMemo(() => ({
@@ -116,9 +114,7 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
   if (isLoading) {
     return (
       <div style={containerStyle}>
-        <div style={loadingStyle}>
-          🔍 検索中...
-        </div>
+        <LoadingSpinner text="🔍 検索中..." size={50} />
       </div>
     );
   }
@@ -145,10 +141,13 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
 
   return (
     <div style={containerStyle}>
-      {results.map((item) => (
+      {results.map((item, index) => (
         <div
           key={item.id}
-          style={resultItemStyle}
+          style={{
+            ...resultItemStyle,
+            animationDelay: `${index * 0.1}s`
+          }}
           onMouseEnter={(e) => Object.assign(e.currentTarget.style, resultItemHoverStyle)}
           onMouseLeave={(e) => Object.assign(e.currentTarget.style, resultItemStyle)}
         >
@@ -172,6 +171,16 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
           </div>
         </div>
       ))}
+      <style>
+        {`
+          @keyframes slideInUp {
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 });
