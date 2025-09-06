@@ -1,24 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Search from '../components/Search';
 import SearchResults from '../components/SearchResults';
+import Filter from '../components/Filter';
 import { getSearchResults } from '../data/searchData';
-import type { SearchItem } from '../data/searchData';
+import type { SearchItem, FilterOptions } from '../data/searchData';
 
 const SearchPage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [currentQuery, setCurrentQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const handleSearch = (query: string) => {
-    setCurrentQuery(query);
+  const performSearch = () => {
     setIsLoading(true);
-
+    
     setTimeout(() => {
-      const results = getSearchResults(query);
+      const filters: FilterOptions = {
+        category: selectedCategory || undefined,
+        tags: selectedTags.length > 0 ? selectedTags : undefined
+      };
+      const results = getSearchResults(currentQuery, filters);
       setSearchResults(results);
       setIsLoading(false);
     }, 200);
   };
+
+  const handleSearch = (query: string) => {
+    setCurrentQuery(query);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(selectedCategory === category ? '' : category);
+  };
+
+  const handleTagChange = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const handleClearFilters = () => {
+    setSelectedCategory('');
+    setSelectedTags([]);
+  };
+
+  useEffect(() => {
+    performSearch();
+  }, [currentQuery, selectedCategory, selectedTags]);
 
   const pageStyle: React.CSSProperties = {
     minHeight: 'calc(100vh - 200px)',
@@ -59,6 +90,14 @@ const SearchPage: React.FC = () => {
           </p>
           <Search onSearch={handleSearch} />
         </div>
+        
+        <Filter
+          selectedCategory={selectedCategory}
+          selectedTags={selectedTags}
+          onCategoryChange={handleCategoryChange}
+          onTagChange={handleTagChange}
+          onClearFilters={handleClearFilters}
+        />
         
         <SearchResults 
           results={searchResults} 

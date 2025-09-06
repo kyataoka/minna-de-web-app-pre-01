@@ -79,14 +79,33 @@ export const searchData: SearchItem[] = [
   }
 ];
 
-export const getSearchResults = (query: string): SearchItem[] => {
-  if (!query.trim()) return [];
-  
-  const searchTerm = query.toLowerCase();
-  return searchData.filter(item =>
-    item.title.toLowerCase().includes(searchTerm) ||
-    item.content.toLowerCase().includes(searchTerm) ||
-    item.category.toLowerCase().includes(searchTerm) ||
-    item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-  );
+export interface FilterOptions {
+  category?: string;
+  tags?: string[];
+}
+
+export const getSearchResults = (query: string, filters?: FilterOptions): SearchItem[] => {
+  let results = searchData;
+
+  if (filters?.category) {
+    results = results.filter(item => item.category === filters.category);
+  }
+
+  if (filters?.tags && filters.tags.length > 0) {
+    results = results.filter(item =>
+      filters.tags!.some(tag => item.tags.includes(tag))
+    );
+  }
+
+  if (query.trim()) {
+    const searchTerm = query.toLowerCase();
+    results = results.filter(item =>
+      item.title.toLowerCase().includes(searchTerm) ||
+      item.content.toLowerCase().includes(searchTerm) ||
+      item.category.toLowerCase().includes(searchTerm) ||
+      item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+    );
+  }
+
+  return results;
 };
