@@ -1,49 +1,56 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
+import { AppProvider } from './context/AppContext';
 import Navigation from './Navigation';
 import HelloWorld from './HelloWorld';
 import Modal from './Modal';
 import Search from './Search';
 import Button from './components/Button';
-import useLocalStorage from './hooks/useLocalStorage';
-import useModal from './hooks/useModal';
+import { useModalState } from './hooks/useAppState';
 
-function App() {
-  const { isOpen: isModalOpen, openModal, closeModal } = useModal(false);
-  const [isDarkMode, setIsDarkMode] = useLocalStorage('theme', false);
+function AppContent() {
+  const { modalState, openModal, closeModal } = useModalState();
 
-  const toggleDarkMode = useCallback(() => {
-    setIsDarkMode(prev => !prev);
-  }, [setIsDarkMode]);
-
-  useEffect(() => {
-    document.body.className = isDarkMode ? 'dark-mode' : '';
-  }, [isDarkMode]);
-
-  return (
-    <div className="App">
-      <Navigation isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      <HelloWorld />
-      
-      <Search />
-      
-      <div style={{ padding: '20px', textAlign: 'center' }}>
-        <Button variant="primary" onClick={openModal}>
-          モーダルを開く
-        </Button>
-      </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        title="サンプルモーダル"
-      >
+  const handleOpenModal = () => {
+    openModal('サンプルモーダル', 
+      <>
         <p>これはモーダルダイアログのサンプルです。</p>
         <p>オーバーレイをクリックするか、右上の×ボタンで閉じることができます。</p>
         <Button variant="success" onClick={closeModal} style={{ marginTop: '10px' }}>
           閉じる
         </Button>
+      </>
+    );
+  };
+
+  return (
+    <div className="App">
+      <Navigation />
+      <HelloWorld />
+      
+      <Search />
+      
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <Button variant="primary" onClick={handleOpenModal}>
+          モーダルを開く
+        </Button>
+      </div>
+
+      <Modal
+        isOpen={modalState.isOpen}
+        onClose={closeModal}
+        title={modalState.title}
+      >
+        {modalState.content}
       </Modal>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   );
 }
 

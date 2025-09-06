@@ -2,7 +2,7 @@ import React from 'react';
 import Input from './components/Input';
 import Button from './components/Button';
 import Select from './components/Select';
-import useSearch from './hooks/useSearch';
+import { useSearchState } from './hooks/useAppState';
 import './Search.css';
 
 const Search = React.memo(function Search() {
@@ -33,40 +33,71 @@ const Search = React.memo(function Search() {
   ];
 
   const {
-    searchTerm,
-    filters,
-    currentPage,
-    paginationData,
-    updateSearchTerm,
-    updateFilter,
-    clearSearch,
-    goToPage,
-    nextPage,
-    prevPage
-  } = useSearch(sampleData, {
-    searchFields: ['title', 'content'],
-    filterFields: { category: 'all', difficulty: 'all' },
-    itemsPerPage: 3
-  });
+    searchState,
+    setSearchQuery,
+    setSearchCategory,
+    setSearchDifficulty,
+    setSearchPage,
+    resetSearch
+  } = useSearchState();
 
-  const { totalPages, currentResults, totalItems } = paginationData;
+  const { query, category, difficulty, currentPage } = searchState;
+
+  const filteredData = React.useMemo(() => {
+    return sampleData.filter(item => {
+      const matchesQuery = query === '' || 
+        item.title.toLowerCase().includes(query.toLowerCase()) ||
+        item.content.toLowerCase().includes(query.toLowerCase());
+      
+      const matchesCategory = category === '' || category === 'all' || item.category === category;
+      const matchesDifficulty = difficulty === '' || difficulty === 'all' || item.difficulty === difficulty;
+      
+      return matchesQuery && matchesCategory && matchesDifficulty;
+    });
+  }, [query, category, difficulty]);
+
+  const itemsPerPage = 3;
+  const totalItems = filteredData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentResults = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
   const handleInputChange = (e) => {
-    updateSearchTerm(e.target.value);
+    setSearchQuery(e.target.value);
   };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      // Search is automatic with useSearch hook
+      // Search is automatic with filteredData
     }
   };
 
   const handleCategoryChange = (e) => {
-    updateFilter('category', e.target.value);
+    setSearchCategory(e.target.value);
   };
 
   const handleDifficultyChange = (e) => {
-    updateFilter('difficulty', e.target.value);
+    setSearchDifficulty(e.target.value);
+  };
+
+  const handleClearSearch = () => {
+    resetSearch();
+  };
+
+  const goToPage = (page) => {
+    setSearchPage(page);
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setSearchPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setSearchPage(currentPage - 1);
+    }
   };
 
   return (
@@ -81,7 +112,7 @@ const Search = React.memo(function Search() {
             <Select
               id="category-filter"
               label="カテゴリ"
-              value={filters.category}
+              value={category || 'all'}
               onChange={handleCategoryChange}
               options={categoryOptions}
               className="filter-select"
@@ -92,7 +123,7 @@ const Search = React.memo(function Search() {
             <Select
               id="difficulty-filter"
               label="難易度"
-              value={filters.difficulty}
+              value={difficulty || 'all'}
               onChange={handleDifficultyChange}
               options={difficultyOptions}
               className="filter-select"
@@ -106,7 +137,7 @@ const Search = React.memo(function Search() {
           type="text"
           className="search-input"
           placeholder="検索キーワードを入力してください..."
-          value={searchTerm}
+          value={query}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
@@ -114,7 +145,7 @@ const Search = React.memo(function Search() {
           <Button variant="primary" className="search-button">
             検索
           </Button>
-          <Button variant="secondary" className="clear-button" onClick={clearSearch}>
+          <Button variant="secondary" className="clear-button" onClick={handleClearSearch}>
             クリア
           </Button>
         </div>
@@ -186,7 +217,7 @@ const Search = React.memo(function Search() {
         </div>
       )}
 
-      {searchTerm && totalItems === 0 && (
+      {query && totalItems === 0 && (
         <div className="no-results">
           <p>検索結果が見つかりませんでした。</p>
         </div>

@@ -1,8 +1,10 @@
 import React from 'react';
 import Button from './components/Button';
+import { useTheme } from './hooks/useAppState';
 import './Navigation.css';
 
-const Navigation = React.memo(function Navigation({ isDarkMode, toggleDarkMode }) {
+const Navigation = React.memo(function Navigation() {
+  const { isDarkMode, toggleDarkMode } = useTheme();
   return (
     <nav className="navigation">
       <div className="nav-brand">
