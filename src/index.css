@@ -5,6 +5,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -30,6 +34,7 @@ body.dark-mode {
 .App {
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
+  animation: fadeInApp 1s ease-out;
 }
 
 /* Dark mode styles for buttons and form elements */
@@ -66,4 +71,59 @@ body.dark-mode .container {
 
 body.dark-mode .card:hover {
   background-color: #3d3d3d;
+}
+
+/* Global animation keyframes */
+@keyframes fadeInApp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+button, input, select, textarea, a {
+  transition: all 0.3s ease !important;
+}
+
+/* Enhanced focus styles */
+button:focus-visible, 
+input:focus-visible, 
+select:focus-visible, 
+textarea:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+  animation: focusPulse 0.3s ease-out;
+}
+
+@keyframes focusPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto !important;
+  }
 }

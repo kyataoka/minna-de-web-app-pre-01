@@ -7,6 +7,7 @@
   align-items: center;
   padding: 0 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.6s ease-out;
 }
 
 .nav-brand h1 {
@@ -25,7 +26,15 @@
 
 .nav-item {
   margin: 0;
+  opacity: 0;
+  animation: fadeInLeft 0.8s ease-out forwards;
 }
+
+.nav-item-1 { animation-delay: 0.1s; }
+.nav-item-2 { animation-delay: 0.2s; }
+.nav-item-3 { animation-delay: 0.3s; }
+.nav-item-4 { animation-delay: 0.4s; }
+.nav-item-5 { animation-delay: 0.5s; }
 
 .nav-link {
   color: white;
@@ -40,7 +49,8 @@
 .nav-link:hover {
   background-color: #555;
   color: #f0f0f0;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .nav-link:active {
@@ -85,6 +95,8 @@ body:not(.dark-mode) .nav-link {
 body:not(.dark-mode) .nav-link:hover {
   background-color: #e9ecef;
   color: #000;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 body:not(.dark-mode) .theme-toggle-btn {
@@ -95,6 +107,29 @@ body:not(.dark-mode) .theme-toggle-btn:hover {
   background-color: #e9ecef;
 }
 
+/* ナビゲーション用アニメーションキーフレーム */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @media (max-width: 768px) {
   .navigation {
     flex-direction: column;
@@ -103,5 +138,20 @@ body:not(.dark-mode) .theme-toggle-btn:hover {
   
   .nav-menu {
     gap: 1rem;
+  }
+  
+  .nav-item {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

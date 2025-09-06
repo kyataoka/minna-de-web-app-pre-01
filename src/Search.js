@@ -166,8 +166,12 @@ const Search = React.memo(function Search() {
               </div>
             )}
           </div>
-          {currentResults.map(result => (
-            <div key={result.id} className="search-result-item">
+          {currentResults.map((result, index) => (
+            <div 
+              key={result.id} 
+              className={`search-result-item result-item-${index + 1}`}
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
               <h4 className="result-title">{result.title}</h4>
               <p className="result-content">{result.content}</p>
               <div className="result-metadata">

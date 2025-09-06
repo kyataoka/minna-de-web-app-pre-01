@@ -8,19 +8,19 @@ const Navigation = React.memo(function Navigation({ isDarkMode, toggleDarkMode }
         <h1>My App</h1>
       </div>
       <ul className="nav-menu">
-        <li className="nav-item">
+        <li className="nav-item nav-item-1">
           <a href="#home" className="nav-link">Home</a>
         </li>
-        <li className="nav-item">
+        <li className="nav-item nav-item-2">
           <a href="#about" className="nav-link">About</a>
         </li>
-        <li className="nav-item">
+        <li className="nav-item nav-item-3">
           <a href="#services" className="nav-link">Services</a>
         </li>
-        <li className="nav-item">
+        <li className="nav-item nav-item-4">
           <a href="#contact" className="nav-link">Contact</a>
         </li>
-        <li className="nav-item">
+        <li className="nav-item nav-item-5">
           <button 
             className="theme-toggle-btn"
             onClick={toggleDarkMode}

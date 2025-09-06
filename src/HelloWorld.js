@@ -3,8 +3,8 @@ import './HelloWorld.css';
 
 const HelloWorld = React.memo(() => {
   return (
-    <div>
-      <h1>Hello World</h1>
+    <div className="hello-world-container">
+      <h1 className="hello-title">Hello World</h1>
       <button className="hover-button">Click me!</button>
     </div>
   );
