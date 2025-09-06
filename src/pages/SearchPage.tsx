@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Search from '../components/Search';
 import SearchResults from '../components/SearchResults';
 import Filter from '../components/Filter';
@@ -6,7 +6,7 @@ import Pagination from '../components/Pagination';
 import { getSearchResults } from '../data/searchData';
 import type { SearchItem, FilterOptions } from '../data/searchData';
 
-const SearchPage: React.FC = () => {
+const SearchPage: React.FC = React.memo(() => {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [allResults, setAllResults] = useState<SearchItem[]>([]);
   const [currentQuery, setCurrentQuery] = useState('');
@@ -16,13 +16,13 @@ const SearchPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const updatePaginatedResults = (results: SearchItem[], page: number) => {
+  const updatePaginatedResults = useCallback((results: SearchItem[], page: number) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setSearchResults(results.slice(startIndex, endIndex));
-  };
+  }, [itemsPerPage]);
 
-  const performSearch = () => {
+  const performSearch = useCallback(() => {
     setIsLoading(true);
     setCurrentPage(1);
     
@@ -35,67 +35,67 @@ const SearchPage: React.FC = () => {
       setAllResults(results);
       updatePaginatedResults(results, 1);
       setIsLoading(false);
-    }, 200);
-  };
+    }, 150);
+  }, [currentQuery, selectedCategory, selectedTags, updatePaginatedResults]);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = useCallback((query: string) => {
     setCurrentQuery(query);
-  };
+  }, []);
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = useCallback((category: string) => {
     setSelectedCategory(selectedCategory === category ? '' : category);
-  };
+  }, [selectedCategory]);
 
-  const handleTagChange = (tag: string) => {
+  const handleTagChange = useCallback((tag: string) => {
     setSelectedTags(prev => 
       prev.includes(tag) 
         ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
-  };
+  }, []);
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     setSelectedCategory('');
     setSelectedTags([]);
-  };
+  }, []);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
     updatePaginatedResults(allResults, page);
-  };
+  }, [allResults, updatePaginatedResults]);
 
   useEffect(() => {
     performSearch();
-  }, [currentQuery, selectedCategory, selectedTags]);
+  }, [performSearch]);
 
-  const pageStyle: React.CSSProperties = {
+  const pageStyle: React.CSSProperties = useMemo(() => ({
     minHeight: 'calc(100vh - 200px)',
     backgroundColor: '#f8f9fa',
     padding: '40px 20px'
-  };
+  }), []);
 
-  const containerStyle: React.CSSProperties = {
+  const containerStyle: React.CSSProperties = useMemo(() => ({
     maxWidth: '1200px',
     margin: '0 auto'
-  };
+  }), []);
 
-  const headerStyle: React.CSSProperties = {
+  const headerStyle: React.CSSProperties = useMemo(() => ({
     textAlign: 'center',
     marginBottom: '40px'
-  };
+  }), []);
 
-  const titleStyle: React.CSSProperties = {
+  const titleStyle: React.CSSProperties = useMemo(() => ({
     fontSize: '32px',
     fontWeight: '700',
     color: '#1976d2',
     marginBottom: '10px'
-  };
+  }), []);
 
-  const subtitleStyle: React.CSSProperties = {
+  const subtitleStyle: React.CSSProperties = useMemo(() => ({
     fontSize: '16px',
     color: '#666',
     marginBottom: '30px'
-  };
+  }), []);
 
   return (
     <div style={pageStyle}>
@@ -133,6 +133,6 @@ const SearchPage: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default SearchPage;

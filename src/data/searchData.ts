@@ -84,7 +84,15 @@ export interface FilterOptions {
   tags?: string[];
 }
 
+const memoCache = new Map<string, SearchItem[]>();
+
 export const getSearchResults = (query: string, filters?: FilterOptions): SearchItem[] => {
+  const cacheKey = JSON.stringify({ query, filters });
+  
+  if (memoCache.has(cacheKey)) {
+    return memoCache.get(cacheKey)!;
+  }
+
   let results = searchData;
 
   if (filters?.category) {
@@ -106,6 +114,11 @@ export const getSearchResults = (query: string, filters?: FilterOptions): Search
       item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
     );
   }
+
+  if (memoCache.size > 50) {
+    memoCache.clear();
+  }
+  memoCache.set(cacheKey, results);
 
   return results;
 };

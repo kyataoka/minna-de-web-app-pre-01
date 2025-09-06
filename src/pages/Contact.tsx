@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
           return 'お名前は2文字以上で入力してください';
         }
         break;
-      case 'email':
+      case 'email': {
         if (!value.trim()) {
           return 'メールアドレスは必須項目です';
         }
@@ -42,6 +42,7 @@ const Contact: React.FC = () => {
           return '有効なメールアドレスを入力してください';
         }
         break;
+      }
       case 'message':
         if (!value.trim()) {
           return 'メッセージは必須項目です';

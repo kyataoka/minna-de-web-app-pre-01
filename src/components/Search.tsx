@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 interface SearchProps {
   placeholder?: string;
@@ -13,21 +13,23 @@ const Search: React.FC<SearchProps> = ({
 }) => {
   const [query, setQuery] = useState('');
 
+  const memoizedOnSearch = useCallback(onSearch, [onSearch]);
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      onSearch(query);
-    }, 300);
+      memoizedOnSearch(query);
+    }, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [query, onSearch]);
+  }, [query, memoizedOnSearch]);
 
-  const searchContainerStyle: React.CSSProperties = {
+  const searchContainerStyle: React.CSSProperties = useMemo(() => ({
     position: 'relative',
     maxWidth: '600px',
     margin: '0 auto'
-  };
+  }), []);
 
-  const searchInputStyle: React.CSSProperties = {
+  const searchInputStyle: React.CSSProperties = useMemo(() => ({
     width: '100%',
     padding: '15px 50px 15px 20px',
     fontSize: '16px',
@@ -37,15 +39,15 @@ const Search: React.FC<SearchProps> = ({
     transition: 'all 0.3s ease',
     backgroundColor: '#ffffff',
     boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-  };
+  }), []);
 
-  const searchInputFocusStyle: React.CSSProperties = {
+  const searchInputFocusStyle: React.CSSProperties = useMemo(() => ({
     ...searchInputStyle,
     borderColor: '#1976d2',
     boxShadow: '0 4px 12px rgba(25, 118, 210, 0.2)'
-  };
+  }), [searchInputStyle]);
 
-  const searchIconStyle: React.CSSProperties = {
+  const searchIconStyle: React.CSSProperties = useMemo(() => ({
     position: 'absolute',
     right: '20px',
     top: '50%',
@@ -53,9 +55,9 @@ const Search: React.FC<SearchProps> = ({
     fontSize: '18px',
     color: '#666',
     pointerEvents: 'none'
-  };
+  }), []);
 
-  const clearButtonStyle: React.CSSProperties = {
+  const clearButtonStyle: React.CSSProperties = useMemo(() => ({
     position: 'absolute',
     right: '50px',
     top: '50%',
@@ -67,15 +69,15 @@ const Search: React.FC<SearchProps> = ({
     cursor: 'pointer',
     padding: '0',
     display: query ? 'block' : 'none'
-  };
+  }), [query]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-  };
+  }, []);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setQuery('');
-  };
+  }, []);
 
   const [isFocused, setIsFocused] = useState(false);
 
