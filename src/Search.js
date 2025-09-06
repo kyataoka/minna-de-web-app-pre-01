@@ -6,6 +6,8 @@ function Search() {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
 
   const sampleData = [
     { id: 1, title: 'Reactの基本', content: 'Reactは、ユーザーインターフェース構築のためのJavaScriptライブラリです。', category: 'React', difficulty: '初級' },
@@ -21,6 +23,7 @@ function Search() {
   const handleSearch = () => {
     if (searchTerm.trim() === '') {
       setSearchResults([]);
+      setCurrentPage(1);
       return;
     }
 
@@ -38,6 +41,7 @@ function Search() {
     }
 
     setSearchResults(filteredResults);
+    setCurrentPage(1);
   };
 
   const handleInputChange = (e) => {
@@ -53,6 +57,7 @@ function Search() {
   const clearSearch = () => {
     setSearchTerm('');
     setSearchResults([]);
+    setCurrentPage(1);
   };
 
   const handleCategoryChange = (e) => {
@@ -61,6 +66,27 @@ function Search() {
 
   const handleDifficultyChange = (e) => {
     setSelectedDifficulty(e.target.value);
+  };
+
+  const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentResults = searchResults.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   return (
@@ -125,8 +151,15 @@ function Search() {
 
       {searchResults.length > 0 && (
         <div className="search-results">
-          <h3>検索結果 ({searchResults.length}件)</h3>
-          {searchResults.map(result => (
+          <div className="results-header">
+            <h3>検索結果 ({searchResults.length}件)</h3>
+            {totalPages > 1 && (
+              <div className="pagination-info">
+                ページ {currentPage} / {totalPages} （{currentResults.length}件表示）
+              </div>
+            )}
+          </div>
+          {currentResults.map(result => (
             <div key={result.id} className="search-result-item">
               <h4 className="result-title">{result.title}</h4>
               <p className="result-content">{result.content}</p>
@@ -140,6 +173,38 @@ function Search() {
               </div>
             </div>
           ))}
+          
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button 
+                className="pagination-btn prev-btn" 
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                ← 前へ
+              </button>
+              
+              <div className="pagination-numbers">
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    className={`pagination-number ${currentPage === index + 1 ? 'active' : ''}`}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+              
+              <button 
+                className="pagination-btn next-btn" 
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                次へ →
+              </button>
+            </div>
+          )}
         </div>
       )}
 

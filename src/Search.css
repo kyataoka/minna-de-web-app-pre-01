@@ -144,13 +144,28 @@
   margin-top: 30px;
 }
 
-.search-results h3 {
-  color: #333;
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.results-header h3 {
+  color: #333;
+  margin: 0;
   font-size: 18px;
   font-weight: 600;
   border-bottom: 2px solid #007bff;
   padding-bottom: 8px;
+}
+
+.pagination-info {
+  color: #666;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .search-result-item {
@@ -255,6 +270,82 @@
   font-size: 16px;
 }
 
+/* ページネーションスタイル */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 16px 0;
+  border-top: 1px solid #e9ecef;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #007bff;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #007bff;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.pagination-btn:disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+  border-color: #e9ecef;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 4px;
+}
+
+.pagination-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.pagination-number:hover {
+  background-color: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.pagination-number.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-number.active:hover {
+  background-color: #0056b3;
+}
+
 /* レスポンシブデザイン */
 @media (max-width: 768px) {
   .search-container {
@@ -304,5 +395,32 @@
   
   .result-metadata {
     flex-wrap: wrap;
+  }
+
+  /* モバイル用ページネーションスタイル */
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination {
+    gap: 4px;
+    padding: 12px 0;
+    flex-wrap: wrap;
+  }
+
+  .pagination-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .pagination-number {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .pagination-numbers {
+    gap: 2px;
   }
 }
