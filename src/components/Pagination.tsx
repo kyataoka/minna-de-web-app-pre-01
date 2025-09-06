@@ -21,29 +21,30 @@ const Pagination: React.FC<PaginationProps> = ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: '8px',
-    margin: '30px 0',
-    padding: '20px 0'
+    gap: 'clamp(4px, 2vw, 8px)',
+    margin: 'clamp(20px, 5vw, 30px) 0',
+    padding: 'clamp(15px, 4vw, 20px) 0',
+    flexWrap: 'wrap'
   };
 
   const buttonStyle: React.CSSProperties = {
-    padding: '8px 12px',
-    border: '1px solid #ddd',
-    backgroundColor: '#fff',
+    padding: 'clamp(6px, 2vw, 8px) clamp(10px, 2.5vw, 12px)',
+    border: '1px solid var(--border-color)',
+    backgroundColor: 'var(--card-bg)',
     borderRadius: '4px',
     cursor: 'pointer',
-    fontSize: '14px',
-    color: '#333',
+    fontSize: 'clamp(12px, 3vw, 14px)',
+    color: 'var(--text-color)',
     transition: 'all 0.2s ease',
-    minWidth: '40px',
+    minWidth: 'clamp(32px, 8vw, 40px)',
     textAlign: 'center'
   };
 
   const activeButtonStyle: React.CSSProperties = {
     ...buttonStyle,
-    backgroundColor: '#1976d2',
+    backgroundColor: 'var(--nav-active-border)',
     color: '#fff',
-    borderColor: '#1976d2',
+    borderColor: 'var(--nav-active-border)',
     fontWeight: '600'
   };
 
@@ -56,9 +57,10 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   const infoStyle: React.CSSProperties = {
-    fontSize: '14px',
-    color: '#666',
-    margin: '0 15px'
+    fontSize: 'clamp(12px, 3vw, 14px)',
+    color: 'var(--text-color)',
+    opacity: 0.7,
+    margin: '0 clamp(10px, 3vw, 15px)'
   };
 
   const generatePageNumbers = () => {

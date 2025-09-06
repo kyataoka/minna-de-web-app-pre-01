@@ -31,8 +31,8 @@ const Search: React.FC<SearchProps> = ({
 
   const searchInputStyle: React.CSSProperties = useMemo(() => ({
     width: '100%',
-    padding: '15px 50px 15px 20px',
-    fontSize: '16px',
+    padding: 'clamp(12px, 3vw, 15px) clamp(40px, 8vw, 50px) clamp(12px, 3vw, 15px) clamp(16px, 4vw, 20px)',
+    fontSize: 'clamp(14px, 3vw, 16px)',
     border: '2px solid var(--border-color)',
     borderRadius: '25px',
     outline: 'none',
@@ -50,22 +50,22 @@ const Search: React.FC<SearchProps> = ({
 
   const searchIconStyle: React.CSSProperties = useMemo(() => ({
     position: 'absolute',
-    right: '20px',
+    right: 'clamp(16px, 4vw, 20px)',
     top: '50%',
     transform: 'translateY(-50%)',
-    fontSize: '18px',
+    fontSize: 'clamp(16px, 4vw, 18px)',
     color: 'var(--text-color)',
     pointerEvents: 'none'
   }), []);
 
   const clearButtonStyle: React.CSSProperties = useMemo(() => ({
     position: 'absolute',
-    right: '50px',
+    right: 'clamp(40px, 8vw, 50px)',
     top: '50%',
     transform: 'translateY(-50%)',
     background: 'none',
     border: 'none',
-    fontSize: '16px',
+    fontSize: 'clamp(14px, 3vw, 16px)',
     color: 'var(--text-color)',
     cursor: 'pointer',
     padding: '0',

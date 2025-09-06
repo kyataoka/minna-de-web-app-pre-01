@@ -70,8 +70,8 @@ const SearchPage: React.FC = React.memo(() => {
 
   const pageStyle: React.CSSProperties = useMemo(() => ({
     minHeight: 'calc(100vh - 200px)',
-    backgroundColor: '#f8f9fa',
-    padding: '40px 20px'
+    backgroundColor: 'var(--bg-color)',
+    padding: 'clamp(20px, 5vw, 40px) clamp(10px, 3vw, 20px)'
   }), []);
 
   const containerStyle: React.CSSProperties = useMemo(() => ({
@@ -81,20 +81,21 @@ const SearchPage: React.FC = React.memo(() => {
 
   const headerStyle: React.CSSProperties = useMemo(() => ({
     textAlign: 'center',
-    marginBottom: '40px'
+    marginBottom: 'clamp(20px, 5vw, 40px)'
   }), []);
 
   const titleStyle: React.CSSProperties = useMemo(() => ({
-    fontSize: '32px',
+    fontSize: 'clamp(24px, 6vw, 32px)',
     fontWeight: '700',
-    color: '#1976d2',
-    marginBottom: '10px'
+    color: 'var(--nav-active-border)',
+    marginBottom: 'clamp(8px, 2vw, 10px)'
   }), []);
 
   const subtitleStyle: React.CSSProperties = useMemo(() => ({
-    fontSize: '16px',
-    color: '#666',
-    marginBottom: '30px'
+    fontSize: 'clamp(14px, 3vw, 16px)',
+    color: 'var(--text-color)',
+    opacity: 0.8,
+    marginBottom: 'clamp(20px, 4vw, 30px)'
   }), []);
 
   return (

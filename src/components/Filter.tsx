@@ -20,18 +20,18 @@ const Filter: React.FC<FilterProps> = ({
   const allTags = Array.from(new Set(searchData.flatMap(item => item.tags)));
 
   const containerStyle: React.CSSProperties = {
-    backgroundColor: 'white',
-    padding: '20px',
+    backgroundColor: 'var(--card-bg)',
+    padding: 'clamp(15px, 4vw, 20px)',
     borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-    marginBottom: '20px'
+    boxShadow: 'var(--shadow)',
+    marginBottom: 'clamp(15px, 4vw, 20px)'
   };
 
   const headerStyle: React.CSSProperties = {
-    fontSize: '18px',
+    fontSize: 'clamp(16px, 4vw, 18px)',
     fontWeight: '600',
-    color: '#1976d2',
-    marginBottom: '15px',
+    color: 'var(--nav-active-border)',
+    marginBottom: 'clamp(12px, 3vw, 15px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
@@ -62,34 +62,34 @@ const Filter: React.FC<FilterProps> = ({
   const categoryListStyle: React.CSSProperties = {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: '8px'
+    gap: 'clamp(6px, 2vw, 8px)'
   };
 
   const tagListStyle: React.CSSProperties = {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: '6px'
+    gap: 'clamp(4px, 1.5vw, 6px)'
   };
 
   const getCategoryButtonStyle = (category: string): React.CSSProperties => ({
-    padding: '8px 16px',
-    border: `2px solid ${selectedCategory === category ? '#1976d2' : '#e0e0e0'}`,
+    padding: 'clamp(6px, 2vw, 8px) clamp(12px, 3vw, 16px)',
+    border: `2px solid ${selectedCategory === category ? 'var(--nav-active-border)' : 'var(--border-color)'}`,
     borderRadius: '20px',
-    backgroundColor: selectedCategory === category ? '#1976d2' : 'white',
-    color: selectedCategory === category ? 'white' : '#666',
-    fontSize: '14px',
+    backgroundColor: selectedCategory === category ? 'var(--nav-active-border)' : 'var(--card-bg)',
+    color: selectedCategory === category ? 'white' : 'var(--text-color)',
+    fontSize: 'clamp(12px, 3vw, 14px)',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.3s ease'
   });
 
   const getTagButtonStyle = (tag: string): React.CSSProperties => ({
-    padding: '6px 12px',
-    border: `1px solid ${selectedTags.includes(tag) ? '#1976d2' : '#e0e0e0'}`,
+    padding: 'clamp(4px, 1.5vw, 6px) clamp(10px, 2.5vw, 12px)',
+    border: `1px solid ${selectedTags.includes(tag) ? 'var(--nav-active-border)' : 'var(--border-color)'}`,
     borderRadius: '16px',
-    backgroundColor: selectedTags.includes(tag) ? '#1976d2' : 'white',
-    color: selectedTags.includes(tag) ? 'white' : '#666',
-    fontSize: '12px',
+    backgroundColor: selectedTags.includes(tag) ? 'var(--nav-active-border)' : 'var(--card-bg)',
+    color: selectedTags.includes(tag) ? 'white' : 'var(--text-color)',
+    fontSize: 'clamp(11px, 2.5vw, 12px)',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.3s ease'

@@ -16,7 +16,7 @@ function AppBar({ title = "My App" }: AppBarProps) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    fontSize: '20px',
+    fontSize: 'clamp(16px, 4vw, 20px)',
     fontWeight: 600,
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     transition: 'background-color 0.3s ease'

@@ -33,7 +33,7 @@ const Navigation: React.FC = () => {
   const navContainerStyle: React.CSSProperties = {
     maxWidth: '1200px',
     margin: '0 auto',
-    padding: '0 20px',
+    padding: '0 clamp(10px, 3vw, 20px)',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
@@ -42,9 +42,9 @@ const Navigation: React.FC = () => {
   const navListStyle: React.CSSProperties = {
     listStyle: 'none',
     margin: 0,
-    padding: isMobile ? '20px' : '0',
+    padding: isMobile ? 'clamp(15px, 4vw, 20px)' : '0',
     display: isMobile ? (isMobileMenuOpen ? 'flex' : 'none') : 'flex',
-    gap: '30px',
+    gap: isMobile ? '20px' : 'clamp(15px, 4vw, 30px)',
     flexDirection: isMobile ? 'column' : 'row',
     position: isMobile ? 'absolute' : 'static',
     top: isMobile ? '100%' : 'auto',
@@ -58,8 +58,8 @@ const Navigation: React.FC = () => {
     textDecoration: 'none',
     color: location.pathname === path ? 'var(--nav-active-border)' : 'var(--text-color)',
     fontWeight: location.pathname === path ? '600' : '500',
-    fontSize: '16px',
-    padding: '12px 20px',
+    fontSize: 'clamp(14px, 3vw, 16px)',
+    padding: isMobile ? '12px 16px' : 'clamp(10px, 2vw, 12px) clamp(16px, 3vw, 20px)',
     borderRadius: '8px',
     backgroundColor: location.pathname === path ? 'var(--nav-active-bg)' : 'transparent',
     border: location.pathname === path ? '2px solid var(--nav-active-border)' : '2px solid transparent',

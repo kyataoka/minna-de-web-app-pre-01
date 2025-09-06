@@ -13,18 +13,20 @@ const Home: React.FC = () => {
 
   return (
     <div style={{ 
-      padding: '20px', 
+      padding: 'clamp(15px, 4vw, 20px)', 
       backgroundColor: 'var(--bg-color)', 
       color: 'var(--text-color)', 
       minHeight: '100vh', 
-      transition: 'background-color 0.3s ease, color 0.3s ease' 
+      transition: 'background-color 0.3s ease, color 0.3s ease',
+      maxWidth: '1200px',
+      margin: '0 auto'
     }}>
       <div style={{
         animation: 'fadeInUp 0.8s ease-out forwards',
         opacity: 0,
         transform: 'translateY(30px)'
       }}>
-        <h1>ホームページ</h1>
+        <h1 style={{ fontSize: 'clamp(24px, 6vw, 32px)' }}>ホームページ</h1>
       </div>
       
       <div style={{
@@ -54,8 +56,10 @@ const Home: React.FC = () => {
         
         <div style={{ 
           display: 'flex', 
-          gap: '15px', 
-          marginTop: '20px',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 'clamp(10px, 3vw, 15px)', 
+          marginTop: 'clamp(15px, 4vw, 20px)',
           animation: 'fadeInUp 0.8s ease-out 0.8s forwards',
           opacity: 0,
           transform: 'translateY(30px)'
@@ -66,13 +70,14 @@ const Home: React.FC = () => {
               backgroundColor: 'var(--button-bg)',
               color: 'white',
               border: 'none',
-              padding: '12px 24px',
+              padding: 'clamp(10px, 2.5vw, 12px) clamp(18px, 4vw, 24px)',
               borderRadius: '6px',
               cursor: 'pointer',
-              fontSize: '16px',
+              fontSize: 'clamp(14px, 3vw, 16px)',
               fontWeight: '500',
               transition: 'all 0.3s ease',
-              boxShadow: '0 2px 4px rgba(0, 123, 255, 0.2)'
+              boxShadow: '0 2px 4px rgba(0, 123, 255, 0.2)',
+              minWidth: 'clamp(140px, 30vw, 180px)'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'var(--button-hover-bg)';
@@ -96,13 +101,14 @@ const Home: React.FC = () => {
               backgroundColor: '#28a745',
               color: 'white',
               border: 'none',
-              padding: '12px 24px',
+              padding: 'clamp(10px, 2.5vw, 12px) clamp(18px, 4vw, 24px)',
               borderRadius: '6px',
               cursor: 'pointer',
-              fontSize: '16px',
+              fontSize: 'clamp(14px, 3vw, 16px)',
               fontWeight: '500',
               transition: 'all 0.3s ease',
-              boxShadow: '0 2px 4px rgba(40, 167, 69, 0.2)'
+              boxShadow: '0 2px 4px rgba(40, 167, 69, 0.2)',
+              minWidth: 'clamp(140px, 30vw, 180px)'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#1e7e34';
