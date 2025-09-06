@@ -96,20 +96,79 @@
 
 @media (max-width: 768px) {
   .modal-content {
-    min-width: 90vw;
-    margin: 20px;
+    min-width: 85vw;
+    margin: 15px;
+    max-height: 85vh;
   }
   
   .modal-header {
-    padding: 16px 20px;
+    padding: 14px 16px;
   }
   
   .modal-body {
-    padding: 20px;
+    padding: 16px;
+    max-height: 55vh;
   }
   
   .modal-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+  }
+
+  .modal-close-button {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    min-width: 95vw;
+    margin: 10px;
+    max-height: 90vh;
+  }
+
+  .modal-header {
+    padding: 12px 14px;
+  }
+
+  .modal-body {
+    padding: 14px;
+    max-height: 65vh;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+  }
+
+  .modal-close-button {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 320px) {
+  .modal-content {
+    margin: 5px;
+  }
+
+  .modal-header {
+    padding: 10px 12px;
+  }
+
+  .modal-body {
+    padding: 12px;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+
+  .modal-close-button {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
   }
 }
 

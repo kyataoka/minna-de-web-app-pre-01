@@ -7,6 +7,26 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px; /* ベースフォントサイズ */
+}
+
+/* レスポンシブな基本フォントサイズ */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 320px) {
+  html {
+    font-size: 13px;
+  }
 }
 
 body {
@@ -35,6 +55,21 @@ body.dark-mode {
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
   animation: fadeInApp 1s ease-out;
+  padding: 0;
+  overflow-x: hidden; /* 横スクロールを防止 */
+}
+
+/* レスポンシブなコンテナ設定 */
+@media (max-width: 768px) {
+  .App {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding: 0 5px;
+  }
 }
 
 /* Dark mode styles for buttons and form elements */
