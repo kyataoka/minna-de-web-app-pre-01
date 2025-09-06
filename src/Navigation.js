@@ -1,7 +1,7 @@
 import React from 'react';
 import './Navigation.css';
 
-function Navigation() {
+const Navigation = React.memo(function Navigation() {
   return (
     <nav className="navigation">
       <div className="nav-brand">
@@ -23,6 +23,6 @@ function Navigation() {
       </ul>
     </nav>
   );
-}
+});
 
 export default Navigation;

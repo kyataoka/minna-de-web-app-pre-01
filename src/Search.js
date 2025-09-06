@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import './Search.css';
 
-function Search() {
+const Search = React.memo(function Search() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -20,7 +20,7 @@ function Search() {
     { id: 8, title: 'TypeScript基礎', content: 'TypeScriptはJavaScriptに型安全性を追加します。', category: 'TypeScript', difficulty: '中級' }
   ];
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     if (searchTerm.trim() === '') {
       setSearchResults([]);
       setCurrentPage(1);
@@ -42,7 +42,7 @@ function Search() {
 
     setSearchResults(filteredResults);
     setCurrentPage(1);
-  };
+  }, [searchTerm, selectedCategory, selectedDifficulty]);
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
@@ -60,34 +60,41 @@ function Search() {
     setCurrentPage(1);
   };
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = useCallback((e) => {
     setSelectedCategory(e.target.value);
-  };
+  }, []);
 
-  const handleDifficultyChange = (e) => {
+  const handleDifficultyChange = useCallback((e) => {
     setSelectedDifficulty(e.target.value);
-  };
+  }, []);
 
-  const totalPages = Math.ceil(searchResults.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentResults = searchResults.slice(startIndex, endIndex);
+  const paginationData = useMemo(() => {
+    const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentResults = searchResults.slice(startIndex, endIndex);
+    return { totalPages, currentResults };
+  }, [searchResults, currentPage, itemsPerPage]);
 
-  const handlePageChange = (page) => {
+  const { totalPages, currentResults } = paginationData;
+
+  const handlePageChange = useCallback((page) => {
     setCurrentPage(page);
-  };
+  }, []);
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  const handlePrevPage = useCallback(() => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+  }, []);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+  const handleNextPage = useCallback(() => {
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  }, [totalPages]);
+
+  useEffect(() => {
+    if (searchTerm || selectedCategory !== 'all' || selectedDifficulty !== 'all') {
+      handleSearch();
     }
-  };
+  }, [selectedCategory, selectedDifficulty, handleSearch]);
 
   return (
     <div className="search-container">
@@ -215,6 +222,6 @@ function Search() {
       )}
     </div>
   );
-}
+});
 
 export default Search;

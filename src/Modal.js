@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Modal.css';
 
-function Modal({ isOpen, onClose, title, children }) {
+const Modal = React.memo(function Modal({ isOpen, onClose, title, children }) {
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscKey);
+      return () => {
+        document.removeEventListener('keydown', handleEscKey);
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -23,6 +38,6 @@ function Modal({ isOpen, onClose, title, children }) {
       </div>
     </div>
   );
-}
+});
 
 export default Modal;
