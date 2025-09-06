@@ -1,38 +1,22 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import AppBar from './AppBar'
+import Navigation from './Navigation'
+import Home from './pages/Home'
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 function App() {
-  const [isHovered, setIsHovered] = useState(false)
-
-  const buttonStyle = {
-    backgroundColor: isHovered ? '#0056b3' : '#007bff',
-    color: 'white',
-    border: 'none',
-    padding: '12px 24px',
-    fontSize: '16px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    boxShadow: isHovered 
-      ? '0 4px 12px rgba(0, 123, 255, 0.3)' 
-      : '0 2px 4px rgba(0, 123, 255, 0.2)',
-    transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-    marginTop: '20px'
-  }
-
   return (
     <div>
-      <AppBar title="Hello World App" />
-      <div style={{ padding: '24px' }}>
-        <h1>Hello World</h1>
-        <button 
-          style={buttonStyle}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          Click Me!
-        </button>
-      </div>
+      <AppBar title="React Router App" />
+      <Navigation />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
     </div>
   )
 }
