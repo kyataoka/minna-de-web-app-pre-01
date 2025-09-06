@@ -165,6 +165,39 @@ const Navigation: React.FC = () => {
               🔍 検索
             </Link>
           </li>
+          <li>
+            <Link 
+              to="/bookmarks" 
+              style={getLinkStyle('/bookmarks')}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, getLinkHoverStyle('/bookmarks'))}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLinkStyle('/bookmarks'))}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              📚 ブックマーク
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/profile" 
+              style={getLinkStyle('/profile')}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, getLinkHoverStyle('/profile'))}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLinkStyle('/profile'))}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              👤 プロフィール
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/settings" 
+              style={getLinkStyle('/settings')}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, getLinkHoverStyle('/settings'))}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLinkStyle('/settings'))}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              ⚙️ 設定
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

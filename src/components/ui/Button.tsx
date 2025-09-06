@@ -1,6 +1,6 @@
 import React from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger';
+type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'outline';
 type ButtonSize = 'small' | 'medium' | 'large';
 
 interface ButtonProps {
@@ -10,6 +10,7 @@ interface ButtonProps {
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  type?: 'button' | 'submit' | 'reset';
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseEnter?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -22,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   className = '',
   style = {},
+  type = 'button',
   onClick,
   onMouseEnter,
   onMouseLeave
@@ -62,6 +64,12 @@ const Button: React.FC<ButtonProps> = ({
       backgroundColor: disabled ? '#cccccc' : '#dc3545',
       color: 'white',
       boxShadow: disabled ? 'none' : '0 2px 4px rgba(220, 53, 69, 0.2)'
+    },
+    outline: {
+      backgroundColor: 'transparent',
+      color: disabled ? '#cccccc' : 'var(--primary-color)',
+      border: disabled ? '1px solid #cccccc' : '1px solid var(--primary-color)',
+      boxShadow: disabled ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.1)'
     }
   };
 
@@ -96,11 +104,13 @@ const Button: React.FC<ButtonProps> = ({
       primary: 'var(--button-hover-bg)',
       secondary: '#5a6268',
       success: '#1e7e34',
-      danger: '#c82333'
+      danger: '#c82333',
+      outline: 'var(--primary-color)'
     };
 
     return {
-      backgroundColor: hoverColors[variant],
+      backgroundColor: variant === 'outline' ? 'var(--primary-color)' : hoverColors[variant],
+      color: variant === 'outline' ? 'white' : undefined,
       transform: 'translateY(-3px) scale(1.05)',
       boxShadow: `0 6px 20px rgba(0, 0, 0, 0.2)`,
       filter: 'brightness(1.1)'
@@ -124,6 +134,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      type={type}
       className={className}
       style={combinedStyle}
       onClick={onClick}

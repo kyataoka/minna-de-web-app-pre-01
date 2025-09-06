@@ -4,11 +4,15 @@ import AppBar from './AppBar'
 import Navigation from './Navigation'
 import PageTransition from './components/PageTransition'
 import LoadingSpinner from './components/LoadingSpinner'
+import NotificationCenter from './components/NotificationCenter'
 
 const Home = lazy(() => import('./pages/Home'))
 const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
 const SearchPage = lazy(() => import('./pages/SearchPage'))
+const Settings = lazy(() => import('./pages/Settings'))
+const Profile = lazy(() => import('./pages/Profile'))
+const Bookmarks = lazy(() => import('./pages/Bookmarks'))
 
 
 function App() {
@@ -16,6 +20,7 @@ function App() {
     <div>
       <AppBar title="React Router App" />
       <Navigation />
+      <NotificationCenter />
       <main>
         <PageTransition>
           <Suspense fallback={<LoadingSpinner text="ページを読み込み中..." />}>
@@ -24,6 +29,9 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/search" element={<SearchPage />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/bookmarks" element={<Bookmarks />} />
             </Routes>
           </Suspense>
         </PageTransition>

@@ -4,17 +4,20 @@ import SearchResults from '../components/SearchResults';
 import Filter from '../components/Filter';
 import Pagination from '../components/Pagination';
 import { getSearchResults } from '../data/searchData';
+import { useSearchHistory, useLoading } from '../contexts/AppContext';
 import type { SearchItem, FilterOptions } from '../data/searchData';
 
 const SearchPage: React.FC = React.memo(() => {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [allResults, setAllResults] = useState<SearchItem[]>([]);
   const [currentQuery, setCurrentQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  
+  const { addSearchHistory } = useSearchHistory();
+  const { loading, setLoading } = useLoading();
 
   const updatePaginatedResults = useCallback((results: SearchItem[], page: number) => {
     const startIndex = (page - 1) * itemsPerPage;
@@ -23,8 +26,13 @@ const SearchPage: React.FC = React.memo(() => {
   }, [itemsPerPage]);
 
   const performSearch = useCallback(() => {
-    setIsLoading(true);
+    setLoading('search', true);
     setCurrentPage(1);
+    
+    // 検索履歴に追加（空でない場合）
+    if (currentQuery.trim()) {
+      addSearchHistory(currentQuery.trim());
+    }
     
     setTimeout(() => {
       const filters: FilterOptions = {
@@ -34,9 +42,9 @@ const SearchPage: React.FC = React.memo(() => {
       const results = getSearchResults(currentQuery, filters);
       setAllResults(results);
       updatePaginatedResults(results, 1);
-      setIsLoading(false);
+      setLoading('search', false);
     }, 150);
-  }, [currentQuery, selectedCategory, selectedTags, updatePaginatedResults]);
+  }, [currentQuery, selectedCategory, selectedTags, updatePaginatedResults, addSearchHistory, setLoading]);
 
   const handleSearch = useCallback((query: string) => {
     setCurrentQuery(query);
@@ -120,10 +128,10 @@ const SearchPage: React.FC = React.memo(() => {
         <SearchResults 
           results={searchResults} 
           query={currentQuery}
-          isLoading={isLoading}
+          isLoading={loading.search}
         />
         
-        {!isLoading && allResults.length > 0 && (
+        {!loading.search && allResults.length > 0 && (
           <Pagination
             currentPage={currentPage}
             totalItems={allResults.length}
