@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
 
 interface ValidationErrors {
   name?: string;
@@ -14,6 +15,13 @@ const Contact: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<ValidationErrors>({});
+
+  useEffect(() => {
+    const savedFormData = loadFromLocalStorage<typeof formData>('contactFormData');
+    if (savedFormData) {
+      setFormData(savedFormData);
+    }
+  }, []);
 
   const validateField = (name: string, value: string): string | undefined => {
     switch (name) {
@@ -48,10 +56,13 @@ const Contact: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
+    const newFormData = {
+      ...formData,
       [name]: value
-    }));
+    };
+    setFormData(newFormData);
+    
+    saveToLocalStorage('contactFormData', newFormData);
 
     const error = validateField(name, value);
     setErrors(prev => ({
@@ -82,6 +93,8 @@ const Contact: React.FC = () => {
     if (validateAllFields()) {
       console.log('フォームデータ:', formData);
       alert('お問い合わせを送信しました！');
+      setFormData({ name: '', email: '', message: '' });
+      saveToLocalStorage('contactFormData', { name: '', email: '', message: '' });
     } else {
       alert('入力内容にエラーがあります。確認してください。');
     }
