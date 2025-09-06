@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navigation from './Navigation';
 import HelloWorld from './HelloWorld';
 import Modal from './Modal';
+import Search from './Search';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,6 +14,8 @@ function App() {
     <div className="App">
       <Navigation />
       <HelloWorld />
+      
+      <Search />
       
       <div style={{ padding: '20px', textAlign: 'center' }}>
         <button 
