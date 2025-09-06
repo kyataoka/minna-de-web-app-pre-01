@@ -108,3 +108,35 @@
     font-size: 1.3rem;
   }
 }
+
+/* Dark mode styles */
+body.dark-mode .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .modal-content {
+  background: #2d2d2d;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .modal-header {
+  border-bottom: 1px solid #555;
+  background-color: #3d3d3d;
+}
+
+body.dark-mode .modal-title {
+  color: #e0e0e0;
+}
+
+body.dark-mode .modal-close-button {
+  color: #ccc;
+}
+
+body.dark-mode .modal-close-button:hover {
+  background-color: #555;
+  color: #ffffff;
+}
+
+body.dark-mode .modal-body {
+  color: #e0e0e0;
+}

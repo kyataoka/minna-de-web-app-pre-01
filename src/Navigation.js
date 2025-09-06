@@ -1,7 +1,7 @@
 import React from 'react';
 import './Navigation.css';
 
-const Navigation = React.memo(function Navigation() {
+const Navigation = React.memo(function Navigation({ isDarkMode, toggleDarkMode }) {
   return (
     <nav className="navigation">
       <div className="nav-brand">
@@ -19,6 +19,15 @@ const Navigation = React.memo(function Navigation() {
         </li>
         <li className="nav-item">
           <a href="#contact" className="nav-link">Contact</a>
+        </li>
+        <li className="nav-item">
+          <button 
+            className="theme-toggle-btn"
+            onClick={toggleDarkMode}
+            aria-label={isDarkMode ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
         </li>
       </ul>
     </nav>

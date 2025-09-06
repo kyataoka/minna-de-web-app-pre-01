@@ -47,6 +47,54 @@
   transform: translateY(0);
 }
 
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.theme-toggle-btn:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Light mode styles for navigation */
+body:not(.dark-mode) .navigation {
+  background-color: #f8f9fa;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark-mode) .nav-brand h1 {
+  color: #333;
+}
+
+body:not(.dark-mode) .nav-link {
+  color: #333;
+}
+
+body:not(.dark-mode) .nav-link:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+
+body:not(.dark-mode) .theme-toggle-btn {
+  color: #333;
+}
+
+body:not(.dark-mode) .theme-toggle-btn:hover {
+  background-color: #e9ecef;
+}
+
 @media (max-width: 768px) {
   .navigation {
     flex-direction: column;

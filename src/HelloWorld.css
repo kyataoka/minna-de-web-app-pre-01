@@ -21,3 +21,14 @@
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* Dark mode styles */
+body.dark-mode .hover-button {
+  background-color: #0d6efd;
+  color: #ffffff;
+}
+
+body.dark-mode .hover-button:hover {
+  background-color: #0b5ed7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
