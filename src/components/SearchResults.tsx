@@ -35,12 +35,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     border: '1px solid #e9ecef'
   };
 
-  const resultsHeaderStyle: React.CSSProperties = {
-    marginBottom: '20px',
-    fontSize: '18px',
-    color: '#333',
-    fontWeight: '600'
-  };
 
   const resultItemStyle: React.CSSProperties = {
     backgroundColor: '#ffffff',
@@ -152,10 +146,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
   return (
     <div style={containerStyle}>
-      <div style={resultsHeaderStyle}>
-        「{query}」の検索結果: {results.length}件
-      </div>
-      
       {results.map((item) => (
         <div
           key={item.id}

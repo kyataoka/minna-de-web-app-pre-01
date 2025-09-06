@@ -2,18 +2,29 @@ import React, { useState, useEffect } from 'react';
 import Search from '../components/Search';
 import SearchResults from '../components/SearchResults';
 import Filter from '../components/Filter';
+import Pagination from '../components/Pagination';
 import { getSearchResults } from '../data/searchData';
 import type { SearchItem, FilterOptions } from '../data/searchData';
 
 const SearchPage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
+  const [allResults, setAllResults] = useState<SearchItem[]>([]);
   const [currentQuery, setCurrentQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const updatePaginatedResults = (results: SearchItem[], page: number) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setSearchResults(results.slice(startIndex, endIndex));
+  };
 
   const performSearch = () => {
     setIsLoading(true);
+    setCurrentPage(1);
     
     setTimeout(() => {
       const filters: FilterOptions = {
@@ -21,7 +32,8 @@ const SearchPage: React.FC = () => {
         tags: selectedTags.length > 0 ? selectedTags : undefined
       };
       const results = getSearchResults(currentQuery, filters);
-      setSearchResults(results);
+      setAllResults(results);
+      updatePaginatedResults(results, 1);
       setIsLoading(false);
     }, 200);
   };
@@ -45,6 +57,11 @@ const SearchPage: React.FC = () => {
   const handleClearFilters = () => {
     setSelectedCategory('');
     setSelectedTags([]);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    updatePaginatedResults(allResults, page);
   };
 
   useEffect(() => {
@@ -104,6 +121,15 @@ const SearchPage: React.FC = () => {
           query={currentQuery}
           isLoading={isLoading}
         />
+        
+        {!isLoading && allResults.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={allResults.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </div>
   );
