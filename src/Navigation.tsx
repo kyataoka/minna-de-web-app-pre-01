@@ -152,6 +152,17 @@ const Navigation: React.FC = () => {
               📧 お問い合わせ
             </Link>
           </li>
+          <li>
+            <Link 
+              to="/search" 
+              style={getLinkStyle('/search')}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, getLinkHoverStyle('/search'))}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLinkStyle('/search'))}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              🔍 検索
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>
