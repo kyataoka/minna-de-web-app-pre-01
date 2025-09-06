@@ -1,6 +1,8 @@
 import React, { useMemo, useCallback } from 'react';
 import type { SearchItem } from '../data/searchData';
 import LoadingSpinner from './LoadingSpinner';
+import { Card } from './ui';
+import { slideInUpAnimation } from '../utils';
 
 interface SearchResultsProps {
   results: SearchItem[];
@@ -30,26 +32,7 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
     border: '1px solid var(--border-color)'
   }), []);
 
-  const resultItemStyle: React.CSSProperties = useMemo(() => ({
-    backgroundColor: 'var(--card-bg)',
-    border: '1px solid var(--border-color)',
-    borderRadius: '8px',
-    padding: '20px',
-    marginBottom: '16px',
-    boxShadow: 'var(--shadow)',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer',
-    animation: 'slideInUp 0.6s ease-out forwards',
-    opacity: 0,
-    transform: 'translateY(20px) scale(0.95)'
-  }), []);
 
-  const resultItemHoverStyle: React.CSSProperties = useMemo(() => ({
-    ...resultItemStyle,
-    boxShadow: 'var(--hover-shadow)',
-    transform: 'translateY(-2px)',
-    borderColor: 'var(--nav-active-border)'
-  }), [resultItemStyle]);
 
   const titleStyle: React.CSSProperties = useMemo(() => ({
     fontSize: '18px',
@@ -142,14 +125,13 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
   return (
     <div style={containerStyle}>
       {results.map((item, index) => (
-        <div
+        <Card
           key={item.id}
+          hoverable
           style={{
-            ...resultItemStyle,
-            animationDelay: `${index * 0.1}s`
+            marginBottom: 'clamp(12px, 3vw, 16px)',
+            ...slideInUpAnimation(index * 0.1)
           }}
-          onMouseEnter={(e) => Object.assign(e.currentTarget.style, resultItemHoverStyle)}
-          onMouseLeave={(e) => Object.assign(e.currentTarget.style, resultItemStyle)}
         >
           <div style={titleStyle}>
             {highlightText(item.title, query)}
@@ -169,7 +151,7 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
               ))}
             </div>
           </div>
-        </div>
+        </Card>
       ))}
       <style>
         {`

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
+import { Input, TextArea, Button } from '../components/ui';
+import { saveToLocalStorage, loadFromLocalStorage, validateField, VALIDATION_RULES } from '../utils';
 
 interface ValidationErrors {
   name?: string;
@@ -23,36 +24,10 @@ const Contact: React.FC = () => {
     }
   }, []);
 
-  const validateField = (name: string, value: string): string | undefined => {
-    switch (name) {
-      case 'name':
-        if (!value.trim()) {
-          return 'お名前は必須項目です';
-        }
-        if (value.trim().length < 2) {
-          return 'お名前は2文字以上で入力してください';
-        }
-        break;
-      case 'email': {
-        if (!value.trim()) {
-          return 'メールアドレスは必須項目です';
-        }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) {
-          return '有効なメールアドレスを入力してください';
-        }
-        break;
-      }
-      case 'message':
-        if (!value.trim()) {
-          return 'メッセージは必須項目です';
-        }
-        if (value.trim().length < 10) {
-          return 'メッセージは10文字以上で入力してください';
-        }
-        break;
-    }
-    return undefined;
+  const validationRules = {
+    name: VALIDATION_RULES.NAME,
+    email: VALIDATION_RULES.EMAIL,
+    message: VALIDATION_RULES.MESSAGE
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,7 +40,7 @@ const Contact: React.FC = () => {
     
     saveToLocalStorage('contactFormData', newFormData);
 
-    const error = validateField(name, value);
+    const error = validateField(name, value, validationRules);
     setErrors(prev => ({
       ...prev,
       [name]: error
@@ -77,7 +52,7 @@ const Contact: React.FC = () => {
     let hasErrors = false;
 
     Object.keys(formData).forEach((fieldName) => {
-      const error = validateField(fieldName, formData[fieldName as keyof typeof formData]);
+      const error = validateField(fieldName, formData[fieldName as keyof typeof formData], validationRules);
       if (error) {
         newErrors[fieldName as keyof ValidationErrors] = error;
         hasErrors = true;
@@ -106,83 +81,39 @@ const Contact: React.FC = () => {
       <h1>お問い合わせ</h1>
       <p>お問い合わせはこちらから。</p>
       <form style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="name" style={{ display: 'block', marginBottom: '5px' }}>お名前</label>
-          <input 
-            type="text" 
-            id="name" 
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              border: `1px solid ${errors.name ? '#dc3545' : '#ccc'}`, 
-              borderRadius: '4px' 
-            }} 
-          />
-          {errors.name && (
-            <div style={{ color: '#dc3545', fontSize: '14px', marginTop: '5px' }}>
-              {errors.name}
-            </div>
-          )}
-        </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>メールアドレス</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              border: `1px solid ${errors.email ? '#dc3545' : '#ccc'}`, 
-              borderRadius: '4px' 
-            }} 
-          />
-          {errors.email && (
-            <div style={{ color: '#dc3545', fontSize: '14px', marginTop: '5px' }}>
-              {errors.email}
-            </div>
-          )}
-        </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="message" style={{ display: 'block', marginBottom: '5px' }}>メッセージ</label>
-          <textarea 
-            id="message" 
-            name="message"
-            value={formData.message}
-            onChange={handleInputChange}
-            rows={5}
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              border: `1px solid ${errors.message ? '#dc3545' : '#ccc'}`, 
-              borderRadius: '4px',
-              resize: 'vertical'
-            }} 
-          />
-          {errors.message && (
-            <div style={{ color: '#dc3545', fontSize: '14px', marginTop: '5px' }}>
-              {errors.message}
-            </div>
-          )}
-        </div>
-        <button 
-          type="submit"
-          style={{
-            backgroundColor: '#007bff',
-            color: 'white',
-            padding: '10px 20px',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
+        <Input
+          type="text"
+          id="name"
+          name="name"
+          label="お名前"
+          value={formData.name}
+          onChange={handleInputChange}
+          error={errors.name}
+          required
+        />
+        <Input
+          type="email"
+          id="email"
+          name="email"
+          label="メールアドレス"
+          value={formData.email}
+          onChange={handleInputChange}
+          error={errors.email}
+          required
+        />
+        <TextArea
+          id="message"
+          name="message"
+          label="メッセージ"
+          value={formData.message}
+          onChange={handleInputChange}
+          error={errors.message}
+          rows={5}
+          required
+        />
+        <Button variant="primary" size="medium" onClick={(e) => { e.preventDefault(); handleSubmit(e as any); }}>
           送信
-        </button>
+        </Button>
       </form>
     </div>
   );
