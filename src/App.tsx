@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import AppBar from './AppBar'
 
 function App() {
   const [isHovered, setIsHovered] = useState(false)
@@ -21,14 +22,17 @@ function App() {
 
   return (
     <div>
-      <h1>Hello World</h1>
-      <button 
-        style={buttonStyle}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        Click Me!
-      </button>
+      <AppBar title="Hello World App" />
+      <div style={{ padding: '24px' }}>
+        <h1>Hello World</h1>
+        <button 
+          style={buttonStyle}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          Click Me!
+        </button>
+      </div>
     </div>
   )
 }
