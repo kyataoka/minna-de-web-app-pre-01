@@ -1,0 +1,130 @@
+.select-container {
+  margin-bottom: 16px;
+}
+
+.select-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.select-field {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23333' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 40px;
+}
+
+.select-field:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.select-field:disabled {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.select-error {
+  border-color: #dc3545;
+}
+
+.select-error:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.error-message {
+  display: block;
+  margin-top: 4px;
+  color: #dc3545;
+  font-size: 12px;
+}
+
+.required-asterisk {
+  color: #dc3545;
+  margin-left: 2px;
+}
+
+/* Dark mode support */
+.dark-mode .select-label {
+  color: #e9ecef;
+}
+
+.dark-mode .select-field {
+  background-color: #2d3748;
+  border-color: #4a5568;
+  color: #e9ecef;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23e9ecef' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+}
+
+.dark-mode .select-field:focus {
+  border-color: #4dabf7;
+  box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+}
+
+.dark-mode .select-field:disabled {
+  background-color: #1a202c;
+  color: #718096;
+}
+
+.dark-mode .select-error {
+  border-color: #fc8181;
+}
+
+.dark-mode .select-error:focus {
+  border-color: #fc8181;
+  box-shadow: 0 0 0 3px rgba(252, 129, 129, 0.1);
+}
+
+.dark-mode .error-message {
+  color: #fc8181;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .select-field {
+    padding: 10px 14px;
+    padding-right: 38px;
+    font-size: 14px;
+    background-size: 10px;
+  }
+  
+  .select-label {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .select-field {
+    padding: 8px 12px;
+    padding-right: 36px;
+    font-size: 14px;
+    background-size: 10px;
+  }
+  
+  .select-label {
+    font-size: 12px;
+  }
+  
+  .error-message {
+    font-size: 11px;
+  }
+}

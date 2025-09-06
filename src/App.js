@@ -1,25 +1,21 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Navigation from './Navigation';
 import HelloWorld from './HelloWorld';
 import Modal from './Modal';
 import Search from './Search';
+import Button from './components/Button';
+import useLocalStorage from './hooks/useLocalStorage';
+import useModal from './hooks/useModal';
 
 function App() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark';
-  });
-
-  const openModal = useCallback(() => setIsModalOpen(true), []);
-  const closeModal = useCallback(() => setIsModalOpen(false), []);
+  const { isOpen: isModalOpen, openModal, closeModal } = useModal(false);
+  const [isDarkMode, setIsDarkMode] = useLocalStorage('theme', false);
 
   const toggleDarkMode = useCallback(() => {
-    setIsDarkMode(prevMode => !prevMode);
-  }, []);
+    setIsDarkMode(prev => !prev);
+  }, [setIsDarkMode]);
 
   useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     document.body.className = isDarkMode ? 'dark-mode' : '';
   }, [isDarkMode]);
 
@@ -31,20 +27,9 @@ function App() {
       <Search />
       
       <div style={{ padding: '20px', textAlign: 'center' }}>
-        <button 
-          onClick={openModal}
-          style={{
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
-        >
+        <Button variant="primary" onClick={openModal}>
           モーダルを開く
-        </button>
+        </Button>
       </div>
 
       <Modal
@@ -54,20 +39,9 @@ function App() {
       >
         <p>これはモーダルダイアログのサンプルです。</p>
         <p>オーバーレイをクリックするか、右上の×ボタンで閉じることができます。</p>
-        <button 
-          onClick={closeModal}
-          style={{
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            padding: '8px 16px',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginTop: '10px'
-          }}
-        >
+        <Button variant="success" onClick={closeModal} style={{ marginTop: '10px' }}>
           閉じる
-        </button>
+        </Button>
       </Modal>
     </div>
   );

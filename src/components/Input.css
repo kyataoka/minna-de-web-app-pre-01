@@ -1,0 +1,127 @@
+.input-container {
+  margin-bottom: 16px;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.input-field:disabled {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.input-field::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.input-error {
+  border-color: #dc3545;
+}
+
+.input-error:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.error-message {
+  display: block;
+  margin-top: 4px;
+  color: #dc3545;
+  font-size: 12px;
+}
+
+.required-asterisk {
+  color: #dc3545;
+  margin-left: 2px;
+}
+
+/* Dark mode support */
+.dark-mode .input-label {
+  color: #e9ecef;
+}
+
+.dark-mode .input-field {
+  background-color: #2d3748;
+  border-color: #4a5568;
+  color: #e9ecef;
+}
+
+.dark-mode .input-field:focus {
+  border-color: #4dabf7;
+  box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+}
+
+.dark-mode .input-field:disabled {
+  background-color: #1a202c;
+  color: #718096;
+}
+
+.dark-mode .input-field::placeholder {
+  color: #718096;
+}
+
+.dark-mode .input-error {
+  border-color: #fc8181;
+}
+
+.dark-mode .input-error:focus {
+  border-color: #fc8181;
+  box-shadow: 0 0 0 3px rgba(252, 129, 129, 0.1);
+}
+
+.dark-mode .error-message {
+  color: #fc8181;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .input-field {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+  
+  .input-label {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-field {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .input-label {
+    font-size: 12px;
+  }
+  
+  .error-message {
+    font-size: 11px;
+  }
+}

@@ -1,14 +1,11 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React from 'react';
+import Input from './components/Input';
+import Button from './components/Button';
+import Select from './components/Select';
+import useSearch from './hooks/useSearch';
 import './Search.css';
 
 const Search = React.memo(function Search() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(3);
-
   const sampleData = [
     { id: 1, title: 'Reactの基本', content: 'Reactは、ユーザーインターフェース構築のためのJavaScriptライブラリです。', category: 'React', difficulty: '初級' },
     { id: 2, title: 'コンポーネントの作成', content: 'Reactコンポーネントは関数またはクラスで定義できます。', category: 'React', difficulty: '初級' },
@@ -20,81 +17,57 @@ const Search = React.memo(function Search() {
     { id: 8, title: 'TypeScript基礎', content: 'TypeScriptはJavaScriptに型安全性を追加します。', category: 'TypeScript', difficulty: '中級' }
   ];
 
-  const handleSearch = useCallback(() => {
-    if (searchTerm.trim() === '') {
-      setSearchResults([]);
-      setCurrentPage(1);
-      return;
-    }
+  const categoryOptions = [
+    { value: 'all', label: 'すべて' },
+    { value: 'React', label: 'React' },
+    { value: 'JavaScript', label: 'JavaScript' },
+    { value: 'CSS', label: 'CSS' },
+    { value: 'TypeScript', label: 'TypeScript' }
+  ];
 
-    let filteredResults = sampleData.filter(item =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.content.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const difficultyOptions = [
+    { value: 'all', label: 'すべて' },
+    { value: '初級', label: '初級' },
+    { value: '中級', label: '中級' },
+    { value: '上級', label: '上級' }
+  ];
 
-    if (selectedCategory !== 'all') {
-      filteredResults = filteredResults.filter(item => item.category === selectedCategory);
-    }
+  const {
+    searchTerm,
+    filters,
+    currentPage,
+    paginationData,
+    updateSearchTerm,
+    updateFilter,
+    clearSearch,
+    goToPage,
+    nextPage,
+    prevPage
+  } = useSearch(sampleData, {
+    searchFields: ['title', 'content'],
+    filterFields: { category: 'all', difficulty: 'all' },
+    itemsPerPage: 3
+  });
 
-    if (selectedDifficulty !== 'all') {
-      filteredResults = filteredResults.filter(item => item.difficulty === selectedDifficulty);
-    }
-
-    setSearchResults(filteredResults);
-    setCurrentPage(1);
-  }, [searchTerm, selectedCategory, selectedDifficulty]);
+  const { totalPages, currentResults, totalItems } = paginationData;
 
   const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
+    updateSearchTerm(e.target.value);
   };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      handleSearch();
+      // Search is automatic with useSearch hook
     }
   };
 
-  const clearSearch = () => {
-    setSearchTerm('');
-    setSearchResults([]);
-    setCurrentPage(1);
+  const handleCategoryChange = (e) => {
+    updateFilter('category', e.target.value);
   };
 
-  const handleCategoryChange = useCallback((e) => {
-    setSelectedCategory(e.target.value);
-  }, []);
-
-  const handleDifficultyChange = useCallback((e) => {
-    setSelectedDifficulty(e.target.value);
-  }, []);
-
-  const paginationData = useMemo(() => {
-    const totalPages = Math.ceil(searchResults.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentResults = searchResults.slice(startIndex, endIndex);
-    return { totalPages, currentResults };
-  }, [searchResults, currentPage, itemsPerPage]);
-
-  const { totalPages, currentResults } = paginationData;
-
-  const handlePageChange = useCallback((page) => {
-    setCurrentPage(page);
-  }, []);
-
-  const handlePrevPage = useCallback(() => {
-    setCurrentPage(prev => Math.max(prev - 1, 1));
-  }, []);
-
-  const handleNextPage = useCallback(() => {
-    setCurrentPage(prev => Math.min(prev + 1, totalPages));
-  }, [totalPages]);
-
-  useEffect(() => {
-    if (searchTerm || selectedCategory !== 'all' || selectedDifficulty !== 'all') {
-      handleSearch();
-    }
-  }, [selectedCategory, selectedDifficulty, handleSearch]);
+  const handleDifficultyChange = (e) => {
+    updateFilter('difficulty', e.target.value);
+  };
 
   return (
     <div className="search-container">
@@ -105,40 +78,31 @@ const Search = React.memo(function Search() {
       <div className="filter-container">
         <div className="filter-row">
           <div className="filter-group">
-            <label htmlFor="category-filter">カテゴリ:</label>
-            <select 
+            <Select
               id="category-filter"
-              className="filter-select" 
-              value={selectedCategory} 
+              label="カテゴリ"
+              value={filters.category}
               onChange={handleCategoryChange}
-            >
-              <option value="all">すべて</option>
-              <option value="React">React</option>
-              <option value="JavaScript">JavaScript</option>
-              <option value="CSS">CSS</option>
-              <option value="TypeScript">TypeScript</option>
-            </select>
+              options={categoryOptions}
+              className="filter-select"
+            />
           </div>
           
           <div className="filter-group">
-            <label htmlFor="difficulty-filter">難易度:</label>
-            <select 
+            <Select
               id="difficulty-filter"
-              className="filter-select" 
-              value={selectedDifficulty} 
+              label="難易度"
+              value={filters.difficulty}
               onChange={handleDifficultyChange}
-            >
-              <option value="all">すべて</option>
-              <option value="初級">初級</option>
-              <option value="中級">中級</option>
-              <option value="上級">上級</option>
-            </select>
+              options={difficultyOptions}
+              className="filter-select"
+            />
           </div>
         </div>
       </div>
       
       <div className="search-input-container">
-        <input
+        <Input
           type="text"
           className="search-input"
           placeholder="検索キーワードを入力してください..."
@@ -147,19 +111,19 @@ const Search = React.memo(function Search() {
           onKeyPress={handleKeyPress}
         />
         <div className="search-buttons">
-          <button className="search-button" onClick={handleSearch}>
+          <Button variant="primary" className="search-button">
             検索
-          </button>
-          <button className="clear-button" onClick={clearSearch}>
+          </Button>
+          <Button variant="secondary" className="clear-button" onClick={clearSearch}>
             クリア
-          </button>
+          </Button>
         </div>
       </div>
 
-      {searchResults.length > 0 && (
+      {totalItems > 0 && (
         <div className="search-results">
           <div className="results-header">
-            <h3>検索結果 ({searchResults.length}件)</h3>
+            <h3>検索結果 ({totalItems}件)</h3>
             {totalPages > 1 && (
               <div className="pagination-info">
                 ページ {currentPage} / {totalPages} （{currentResults.length}件表示）
@@ -187,39 +151,42 @@ const Search = React.memo(function Search() {
           
           {totalPages > 1 && (
             <div className="pagination">
-              <button 
+              <Button 
+                variant="outline"
                 className="pagination-btn prev-btn" 
-                onClick={handlePrevPage}
+                onClick={prevPage}
                 disabled={currentPage === 1}
               >
                 ← 前へ
-              </button>
+              </Button>
               
               <div className="pagination-numbers">
                 {Array.from({ length: totalPages }, (_, index) => (
-                  <button
+                  <Button
                     key={index + 1}
+                    variant={currentPage === index + 1 ? 'primary' : 'outline'}
                     className={`pagination-number ${currentPage === index + 1 ? 'active' : ''}`}
-                    onClick={() => handlePageChange(index + 1)}
+                    onClick={() => goToPage(index + 1)}
                   >
                     {index + 1}
-                  </button>
+                  </Button>
                 ))}
               </div>
               
-              <button 
+              <Button 
+                variant="outline"
                 className="pagination-btn next-btn" 
-                onClick={handleNextPage}
+                onClick={nextPage}
                 disabled={currentPage === totalPages}
               >
                 次へ →
-              </button>
+              </Button>
             </div>
           )}
         </div>
       )}
 
-      {searchTerm && searchResults.length === 0 && (
+      {searchTerm && totalItems === 0 && (
         <div className="no-results">
           <p>検索結果が見つかりませんでした。</p>
         </div>

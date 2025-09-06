@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './components/Button';
 import './Navigation.css';
 
 const Navigation = React.memo(function Navigation({ isDarkMode, toggleDarkMode }) {
@@ -21,13 +22,14 @@ const Navigation = React.memo(function Navigation({ isDarkMode, toggleDarkMode }
           <a href="#contact" className="nav-link">Contact</a>
         </li>
         <li className="nav-item nav-item-5">
-          <button 
+          <Button 
+            variant="outline"
             className="theme-toggle-btn"
             onClick={toggleDarkMode}
-            aria-label={isDarkMode ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+            ariaLabel={isDarkMode ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
           >
             {isDarkMode ? '☀️' : '🌙'}
-          </button>
+          </Button>
         </li>
       </ul>
     </nav>

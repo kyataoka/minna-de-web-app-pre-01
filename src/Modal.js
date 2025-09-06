@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Button from './components/Button';
 import './Modal.css';
 
 const Modal = React.memo(function Modal({ isOpen, onClose, title, children }) {
@@ -24,13 +25,15 @@ const Modal = React.memo(function Modal({ isOpen, onClose, title, children }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">{title}</h2>
-          <button 
+          <Button 
+            variant="outline"
+            size="small"
             className="modal-close-button" 
             onClick={onClose}
-            aria-label="モーダルを閉じる"
+            ariaLabel="モーダルを閉じる"
           >
             ×
-          </button>
+          </Button>
         </div>
         <div className="modal-body">
           {children}
