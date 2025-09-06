@@ -1,26 +1,31 @@
+import ThemeToggle from './components/ThemeToggle'
+
 interface AppBarProps {
   title?: string
 }
 
 function AppBar({ title = "My App" }: AppBarProps) {
   const appBarStyle = {
-    backgroundColor: '#1976d2',
+    backgroundColor: 'var(--appbar-bg)',
     color: 'white',
     padding: '16px 24px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: 'var(--shadow)',
     position: 'sticky' as const,
     top: 0,
     zIndex: 1000,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     fontSize: '20px',
     fontWeight: 600,
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    transition: 'background-color 0.3s ease'
   }
 
   return (
     <div style={appBarStyle}>
-      {title}
+      <span>{title}</span>
+      <ThemeToggle />
     </div>
   )
 }

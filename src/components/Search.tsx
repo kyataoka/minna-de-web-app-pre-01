@@ -33,18 +33,19 @@ const Search: React.FC<SearchProps> = ({
     width: '100%',
     padding: '15px 50px 15px 20px',
     fontSize: '16px',
-    border: '2px solid #e0e0e0',
+    border: '2px solid var(--border-color)',
     borderRadius: '25px',
     outline: 'none',
     transition: 'all 0.3s ease',
-    backgroundColor: '#ffffff',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+    backgroundColor: 'var(--input-bg)',
+    boxShadow: 'var(--shadow)',
+    color: 'var(--text-color)'
   }), []);
 
   const searchInputFocusStyle: React.CSSProperties = useMemo(() => ({
     ...searchInputStyle,
-    borderColor: '#1976d2',
-    boxShadow: '0 4px 12px rgba(25, 118, 210, 0.2)'
+    borderColor: 'var(--nav-active-border)',
+    boxShadow: 'var(--hover-shadow)'
   }), [searchInputStyle]);
 
   const searchIconStyle: React.CSSProperties = useMemo(() => ({
@@ -53,7 +54,7 @@ const Search: React.FC<SearchProps> = ({
     top: '50%',
     transform: 'translateY(-50%)',
     fontSize: '18px',
-    color: '#666',
+    color: 'var(--text-color)',
     pointerEvents: 'none'
   }), []);
 
@@ -65,7 +66,7 @@ const Search: React.FC<SearchProps> = ({
     background: 'none',
     border: 'none',
     fontSize: '16px',
-    color: '#666',
+    color: 'var(--text-color)',
     cursor: 'pointer',
     padding: '0',
     display: query ? 'block' : 'none'

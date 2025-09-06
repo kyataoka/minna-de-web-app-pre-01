@@ -46,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         left: 0,
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'var(--modal-overlay)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -57,7 +57,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
       <div 
         className="modal-content"
         style={{
-          backgroundColor: 'white',
+          backgroundColor: 'var(--modal-bg)',
           padding: '24px',
           borderRadius: '8px',
           maxWidth: '500px',
@@ -76,14 +76,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
             alignItems: 'center',
             marginBottom: '20px',
             paddingBottom: '12px',
-            borderBottom: '1px solid #e5e5e5'
+            borderBottom: '1px solid var(--border-color)'
           }}
         >
           <h2 style={{ 
             margin: 0, 
             fontSize: '20px', 
             fontWeight: '600',
-            color: '#1976d2'
+            color: 'var(--nav-active-border)'
           }}>
             {title}
           </h2>
@@ -94,18 +94,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
               border: 'none',
               fontSize: '24px',
               cursor: 'pointer',
-              color: '#666',
+              color: 'var(--text-color)',
               padding: '4px',
               borderRadius: '4px',
               transition: 'all 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f5f5f5';
-              e.currentTarget.style.color = '#333';
+              e.currentTarget.style.backgroundColor = 'var(--card-bg)';
+              e.currentTarget.style.color = 'var(--text-color)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = '#666';
+              e.currentTarget.style.color = 'var(--text-color)';
             }}
           >
             ×

@@ -20,13 +20,14 @@ const Navigation: React.FC = () => {
   }, []);
 
   const navStyle: React.CSSProperties = {
-    backgroundColor: '#ffffff',
+    backgroundColor: 'var(--nav-bg)',
     padding: '15px 0',
-    borderBottom: '1px solid #e0e0e0',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    borderBottom: '1px solid var(--border-color)',
+    boxShadow: 'var(--shadow)',
     position: 'sticky',
     top: '60px',
-    zIndex: 99
+    zIndex: 99,
+    transition: 'background-color 0.3s ease'
   };
 
   const navContainerStyle: React.CSSProperties = {
@@ -49,19 +50,19 @@ const Navigation: React.FC = () => {
     top: isMobile ? '100%' : 'auto',
     left: isMobile ? '0' : 'auto',
     width: isMobile ? '100%' : 'auto',
-    backgroundColor: isMobile ? '#ffffff' : 'transparent',
+    backgroundColor: isMobile ? 'var(--nav-bg)' : 'transparent',
     boxShadow: isMobile ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'
   };
 
   const getLinkStyle = (path: string): React.CSSProperties => ({
     textDecoration: 'none',
-    color: location.pathname === path ? '#1976d2' : '#666666',
+    color: location.pathname === path ? 'var(--nav-active-border)' : 'var(--text-color)',
     fontWeight: location.pathname === path ? '600' : '500',
     fontSize: '16px',
     padding: '12px 20px',
     borderRadius: '8px',
-    backgroundColor: location.pathname === path ? '#e3f2fd' : 'transparent',
-    border: location.pathname === path ? '2px solid #1976d2' : '2px solid transparent',
+    backgroundColor: location.pathname === path ? 'var(--nav-active-bg)' : 'transparent',
+    border: location.pathname === path ? '2px solid var(--nav-active-border)' : '2px solid transparent',
     transition: 'all 0.3s ease',
     position: 'relative',
     display: 'block'
@@ -69,9 +70,9 @@ const Navigation: React.FC = () => {
 
   const getLinkHoverStyle = (path: string): React.CSSProperties => ({
     ...getLinkStyle(path),
-    backgroundColor: location.pathname === path ? '#e3f2fd' : '#f5f5f5',
+    backgroundColor: location.pathname === path ? 'var(--nav-active-bg)' : 'var(--card-bg)',
     transform: 'translateY(-1px)',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+    boxShadow: 'var(--hover-shadow)'
   });
 
   const hamburgerStyle: React.CSSProperties = {
@@ -87,7 +88,7 @@ const Navigation: React.FC = () => {
   const hamburgerLineStyle: React.CSSProperties = {
     width: '25px',
     height: '3px',
-    backgroundColor: '#333',
+    backgroundColor: 'var(--text-color)',
     margin: '3px 0',
     transition: '0.3s',
     transformOrigin: 'center'
@@ -103,7 +104,7 @@ const Navigation: React.FC = () => {
         <div style={{
           fontSize: '18px',
           fontWeight: 'bold',
-          color: '#1976d2'
+          color: 'var(--nav-active-border)'
         }}>
           Navigation
         </div>

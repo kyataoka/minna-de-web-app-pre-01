@@ -22,48 +22,48 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
     textAlign: 'center',
     padding: '40px',
     fontSize: '16px',
-    color: '#666'
+    color: 'var(--text-color)'
   }), []);
 
   const noResultsStyle: React.CSSProperties = useMemo(() => ({
     textAlign: 'center',
     padding: '40px',
     fontSize: '16px',
-    color: '#666',
-    backgroundColor: '#f8f9fa',
+    color: 'var(--text-color)',
+    backgroundColor: 'var(--card-bg)',
     borderRadius: '8px',
-    border: '1px solid #e9ecef'
+    border: '1px solid var(--border-color)'
   }), []);
 
   const resultItemStyle: React.CSSProperties = useMemo(() => ({
-    backgroundColor: '#ffffff',
-    border: '1px solid #e0e0e0',
+    backgroundColor: 'var(--card-bg)',
+    border: '1px solid var(--border-color)',
     borderRadius: '8px',
     padding: '20px',
     marginBottom: '16px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    boxShadow: 'var(--shadow)',
     transition: 'all 0.3s ease',
     cursor: 'pointer'
   }), []);
 
   const resultItemHoverStyle: React.CSSProperties = useMemo(() => ({
     ...resultItemStyle,
-    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+    boxShadow: 'var(--hover-shadow)',
     transform: 'translateY(-2px)',
-    borderColor: '#1976d2'
+    borderColor: 'var(--nav-active-border)'
   }), [resultItemStyle]);
 
   const titleStyle: React.CSSProperties = useMemo(() => ({
     fontSize: '18px',
     fontWeight: '600',
-    color: '#1976d2',
+    color: 'var(--nav-active-border)',
     marginBottom: '8px',
     lineHeight: '1.4'
   }), []);
 
   const contentStyle: React.CSSProperties = useMemo(() => ({
     fontSize: '14px',
-    color: '#666',
+    color: 'var(--text-color)',
     lineHeight: '1.6',
     marginBottom: '12px'
   }), []);
@@ -73,12 +73,12 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
     alignItems: 'center',
     gap: '15px',
     fontSize: '12px',
-    color: '#888'
+    color: 'var(--text-color)'
   }), []);
 
   const categoryStyle: React.CSSProperties = useMemo(() => ({
-    backgroundColor: '#e3f2fd',
-    color: '#1976d2',
+    backgroundColor: 'var(--nav-active-bg)',
+    color: 'var(--nav-active-border)',
     padding: '4px 8px',
     borderRadius: '4px',
     fontWeight: '500'
@@ -91,8 +91,8 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
   }), []);
 
   const tagStyle: React.CSSProperties = useMemo(() => ({
-    backgroundColor: '#f5f5f5',
-    color: '#666',
+    backgroundColor: 'var(--card-bg)',
+    color: 'var(--text-color)',
     padding: '2px 6px',
     borderRadius: '3px',
     fontSize: '11px'
@@ -104,7 +104,7 @@ const SearchResults: React.FC<SearchResultsProps> = React.memo(({
     const parts = text.split(new RegExp(`(${query})`, 'gi'));
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <span key={index} style={{ backgroundColor: '#fff3cd', fontWeight: '600' }}>
+        <span key={index} style={{ backgroundColor: 'var(--search-highlight)', fontWeight: '600' }}>
           {part}
         </span>
       ) : (

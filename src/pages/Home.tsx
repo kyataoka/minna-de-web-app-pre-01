@@ -12,7 +12,7 @@ const Home: React.FC = () => {
   const closeInfoModal = () => setIsInfoModalOpen(false);
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', backgroundColor: 'var(--bg-color)', color: 'var(--text-color)', minHeight: '100vh', transition: 'background-color 0.3s ease, color 0.3s ease' }}>
       <h1>ホームページ</h1>
       <p>React Routerを使ったページ遷移のデモアプリケーションです。</p>
       <p>ナビゲーションメニューから他のページに移動できます。</p>
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
           <button
             onClick={openModal}
             style={{
-              backgroundColor: '#007bff',
+              backgroundColor: 'var(--button-bg)',
               color: 'white',
               border: 'none',
               padding: '12px 24px',
@@ -37,12 +37,12 @@ const Home: React.FC = () => {
               boxShadow: '0 2px 4px rgba(0, 123, 255, 0.2)'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#0056b3';
+              e.currentTarget.style.backgroundColor = 'var(--button-hover-bg)';
               e.currentTarget.style.transform = 'translateY(-2px)';
               e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 123, 255, 0.3)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#007bff';
+              e.currentTarget.style.backgroundColor = 'var(--button-bg)';
               e.currentTarget.style.transform = 'translateY(0)';
               e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 123, 255, 0.2)';
             }}
@@ -96,7 +96,7 @@ const Home: React.FC = () => {
           <button
             onClick={closeModal}
             style={{
-              backgroundColor: '#6c757d',
+              backgroundColor: 'var(--button-bg)',
               color: 'white',
               border: 'none',
               padding: '8px 16px',
@@ -137,7 +137,7 @@ const Home: React.FC = () => {
             <button
               onClick={closeInfoModal}
               style={{
-                backgroundColor: '#007bff',
+                backgroundColor: 'var(--button-bg)',
                 color: 'white',
                 border: 'none',
                 padding: '8px 16px',
