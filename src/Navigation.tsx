@@ -1,52 +1,159 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const navStyle: React.CSSProperties = {
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#ffffff',
     padding: '15px 0',
-    borderBottom: '1px solid #dee2e6'
+    borderBottom: '1px solid #e0e0e0',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    position: 'sticky',
+    top: '60px',
+    zIndex: 99
+  };
+
+  const navContainerStyle: React.CSSProperties = {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '0 20px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   };
 
   const navListStyle: React.CSSProperties = {
     listStyle: 'none',
     margin: 0,
-    padding: '0 20px',
-    display: 'flex',
-    gap: '20px'
+    padding: isMobile ? '20px' : '0',
+    display: isMobile ? (isMobileMenuOpen ? 'flex' : 'none') : 'flex',
+    gap: '30px',
+    flexDirection: isMobile ? 'column' : 'row',
+    position: isMobile ? 'absolute' : 'static',
+    top: isMobile ? '100%' : 'auto',
+    left: isMobile ? '0' : 'auto',
+    width: isMobile ? '100%' : 'auto',
+    backgroundColor: isMobile ? '#ffffff' : 'transparent',
+    boxShadow: isMobile ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'
   };
 
   const getLinkStyle = (path: string): React.CSSProperties => ({
     textDecoration: 'none',
-    color: location.pathname === path ? '#007bff' : '#6c757d',
-    fontWeight: location.pathname === path ? 'bold' : 'normal',
-    padding: '10px 15px',
-    borderRadius: '4px',
+    color: location.pathname === path ? '#1976d2' : '#666666',
+    fontWeight: location.pathname === path ? '600' : '500',
+    fontSize: '16px',
+    padding: '12px 20px',
+    borderRadius: '8px',
     backgroundColor: location.pathname === path ? '#e3f2fd' : 'transparent',
-    transition: 'all 0.3s ease'
+    border: location.pathname === path ? '2px solid #1976d2' : '2px solid transparent',
+    transition: 'all 0.3s ease',
+    position: 'relative',
+    display: 'block'
   });
+
+  const getLinkHoverStyle = (path: string): React.CSSProperties => ({
+    ...getLinkStyle(path),
+    backgroundColor: location.pathname === path ? '#e3f2fd' : '#f5f5f5',
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+  });
+
+  const hamburgerStyle: React.CSSProperties = {
+    display: isMobile ? 'flex' : 'none',
+    flexDirection: 'column',
+    cursor: 'pointer',
+    padding: '8px',
+    borderRadius: '4px',
+    backgroundColor: 'transparent',
+    border: 'none'
+  };
+
+  const hamburgerLineStyle: React.CSSProperties = {
+    width: '25px',
+    height: '3px',
+    backgroundColor: '#333',
+    margin: '3px 0',
+    transition: '0.3s',
+    transformOrigin: 'center'
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <nav style={navStyle}>
-      <ul style={navListStyle}>
-        <li>
-          <Link to="/" style={getLinkStyle('/')}>
-            ホーム
-          </Link>
-        </li>
-        <li>
-          <Link to="/about" style={getLinkStyle('/about')}>
-            About
-          </Link>
-        </li>
-        <li>
-          <Link to="/contact" style={getLinkStyle('/contact')}>
-            お問い合わせ
-          </Link>
-        </li>
-      </ul>
+      <div style={navContainerStyle}>
+        <div style={{
+          fontSize: '18px',
+          fontWeight: 'bold',
+          color: '#1976d2'
+        }}>
+          Navigation
+        </div>
+        
+        <button
+          style={hamburgerStyle}
+          onClick={toggleMobileMenu}
+          aria-label="メニュー切替"
+        >
+          <span style={hamburgerLineStyle}></span>
+          <span style={hamburgerLineStyle}></span>
+          <span style={hamburgerLineStyle}></span>
+        </button>
+
+        <ul style={navListStyle}>
+          <li>
+            <Link 
+              to="/" 
+              style={getLinkStyle('/')}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, getLinkHoverStyle('/'))}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLinkStyle('/'))}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              🏠 ホーム
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/about" 
+              style={getLinkStyle('/about')}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, getLinkHoverStyle('/about'))}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLinkStyle('/about'))}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              ℹ️ About
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/contact" 
+              style={getLinkStyle('/contact')}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, getLinkHoverStyle('/contact'))}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLinkStyle('/contact'))}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              📧 お問い合わせ
+            </Link>
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 };
