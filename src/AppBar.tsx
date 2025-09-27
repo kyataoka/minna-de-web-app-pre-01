@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 interface AppBarProps {
   title?: string;
 }
@@ -8,9 +10,9 @@ function AppBar({ title = "My App" }: AppBarProps) {
       <div className="app-bar-content">
         <h1 className="app-bar-title">{title}</h1>
         <nav className="app-bar-nav">
-          <a href="#" className="nav-link">ホーム</a>
-          <a href="#" className="nav-link">機能</a>
-          <a href="#" className="nav-link">お問い合わせ</a>
+          <Link to="/" className="nav-link">ホーム</Link>
+          <Link to="/features" className="nav-link">機能</Link>
+          <Link to="/contact" className="nav-link">お問い合わせ</Link>
         </nav>
       </div>
     </header>
