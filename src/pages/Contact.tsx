@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 
 interface ValidationErrors {
   name?: string
@@ -14,6 +14,22 @@ function Contact() {
   })
   
   const [errors, setErrors] = useState<ValidationErrors>({})
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('contactFormData')
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData)
+        setFormData(parsedData)
+      } catch (error) {
+        console.error('ローカルストレージからのデータ復元に失敗しました:', error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('contactFormData', JSON.stringify(formData))
+  }, [formData])
 
   const validateField = (name: string, value: string): string | undefined => {
     switch (name) {
@@ -71,6 +87,13 @@ function Contact() {
     
     console.log('フォームデータ:', formData)
     alert(`お名前: ${formData.name}\nメール: ${formData.email}\nメッセージ: ${formData.message}`)
+    
+    setFormData({
+      name: '',
+      email: '',
+      message: ''
+    })
+    localStorage.removeItem('contactFormData')
   }
 
   return (
