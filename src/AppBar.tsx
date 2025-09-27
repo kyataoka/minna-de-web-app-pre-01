@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
+import SearchBox from './SearchBox'
 
 interface AppBarProps {
   title?: string;
@@ -38,6 +39,11 @@ function AppBar({ title = "My App" }: AppBarProps) {
     <header className="app-bar">
       <div className="app-bar-content">
         <h1 className="app-bar-title">{title}</h1>
+        
+        {/* 検索ボックス */}
+        <div className="search-container">
+          <SearchBox />
+        </div>
         
         {/* ハンバーガーメニューボタン */}
         <button 

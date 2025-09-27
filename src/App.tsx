@@ -5,6 +5,7 @@ import Features from './pages/Features'
 import FeaturesAdvanced from './pages/FeaturesAdvanced'
 import FeaturesApi from './pages/FeaturesApi'
 import Contact from './pages/Contact'
+import SearchResults from './pages/SearchResults'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/features/advanced" element={<FeaturesAdvanced />} />
           <Route path="/features/api" element={<FeaturesApi />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
       </div>
     </Router>
