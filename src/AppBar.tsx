@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import SearchBox from './SearchBox'
 
 interface AppBarProps {
@@ -11,29 +11,29 @@ function AppBar({ title = "My App" }: AppBarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const location = useLocation()
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(prev => !prev)
+  }, [])
 
-  const closeMenu = () => {
+  const closeMenu = useCallback(() => {
     setIsMenuOpen(false)
-  }
+  }, [])
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen)
-  }
+  const toggleDropdown = useCallback(() => {
+    setIsDropdownOpen(prev => !prev)
+  }, [])
 
-  const closeDropdown = () => {
+  const closeDropdown = useCallback(() => {
     setIsDropdownOpen(false)
-  }
+  }, [])
 
-  const isActive = (path: string) => {
+  const isActive = useCallback((path: string) => {
     return location.pathname === path
-  }
+  }, [location.pathname])
 
-  const isFeaturesActive = () => {
+  const isFeaturesActive = useMemo(() => {
     return location.pathname.startsWith('/features')
-  }
+  }, [location.pathname])
 
   return (
     <header className="app-bar">
@@ -73,7 +73,7 @@ function AppBar({ title = "My App" }: AppBarProps) {
           >
             <Link 
               to="/features" 
-              className={`nav-link dropdown-trigger ${isFeaturesActive() ? 'active' : ''}`}
+              className={`nav-link dropdown-trigger ${isFeaturesActive ? 'active' : ''}`}
             >
               機能 ↓
             </Link>
@@ -111,7 +111,7 @@ function AppBar({ title = "My App" }: AppBarProps) {
           {/* モバイル用ドロップダウンメニュー */}
           <div className="mobile-dropdown">
             <button 
-              className={`nav-link dropdown-trigger mobile ${isFeaturesActive() ? 'active' : ''}`}
+              className={`nav-link dropdown-trigger mobile ${isFeaturesActive ? 'active' : ''}`}
               onClick={toggleDropdown}
             >
               機能 {isDropdownOpen ? '▲' : '▼'}

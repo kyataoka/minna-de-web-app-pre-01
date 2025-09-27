@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface SearchBoxProps {
   onSearch?: (query: string) => void;
 }
 
-function SearchBox({ onSearch }: SearchBoxProps) {
+const SearchBox = memo(function SearchBox({ onSearch }: SearchBoxProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       if (onSearch) {
@@ -17,11 +17,11 @@ function SearchBox({ onSearch }: SearchBoxProps) {
       }
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
     }
-  }
+  }, [searchQuery, onSearch, navigate])
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value)
-  }
+  }, [])
 
   return (
     <form className="search-box" onSubmit={handleSubmit}>
@@ -44,6 +44,6 @@ function SearchBox({ onSearch }: SearchBoxProps) {
       </div>
     </form>
   )
-}
+})
 
 export default SearchBox

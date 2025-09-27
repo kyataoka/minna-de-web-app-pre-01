@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo, useCallback, memo } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import Pagination from '../Pagination'
 
@@ -69,7 +69,7 @@ const searchData: SearchResult[] = [
   }
 ]
 
-function SearchResults() {
+const SearchResults = memo(function SearchResults() {
   const [searchParams] = useSearchParams()
   const [results, setResults] = useState<SearchResult[]>([])
   const [filteredResults, setFilteredResults] = useState<SearchResult[]>([])
@@ -79,46 +79,46 @@ function SearchResults() {
   const itemsPerPage = 5
   const query = searchParams.get('q') || ''
   
-  const categories = ['すべて', ...Array.from(new Set(searchData.map(item => item.category)))]
+  const categories = useMemo(() => ['すべて', ...Array.from(new Set(searchData.map(item => item.category)))], [])
 
-  useEffect(() => {
-    const performSearch = () => {
-      setLoading(true)
-      
-      if (!query.trim()) {
-        setResults([])
-        setLoading(false)
-        return
-      }
-
-      // 検索を実行（タイトルと内容で検索）
-      const searchResults = searchData.filter(item => {
-        const searchText = query.toLowerCase()
-        return (
-          item.title.toLowerCase().includes(searchText) ||
-          item.content.toLowerCase().includes(searchText)
-        )
-      })
-
-      // 検索結果の関連度によるソート（タイトルマッチを優先）
-      searchResults.sort((a, b) => {
-        const aTitle = a.title.toLowerCase().includes(query.toLowerCase())
-        const bTitle = b.title.toLowerCase().includes(query.toLowerCase())
-        
-        if (aTitle && !bTitle) return -1
-        if (!aTitle && bTitle) return 1
-        return 0
-      })
-
-      setResults(searchResults)
+  const performSearch = useCallback((searchQuery: string) => {
+    setLoading(true)
+    
+    if (!searchQuery.trim()) {
+      setResults([])
       setLoading(false)
+      return
     }
 
+    // 検索を実行（タイトルと内容で検索）
+    const searchResults = searchData.filter(item => {
+      const searchText = searchQuery.toLowerCase()
+      return (
+        item.title.toLowerCase().includes(searchText) ||
+        item.content.toLowerCase().includes(searchText)
+      )
+    })
+
+    // 検索結果の関連度によるソート（タイトルマッチを優先）
+    searchResults.sort((a, b) => {
+      const aTitle = a.title.toLowerCase().includes(searchQuery.toLowerCase())
+      const bTitle = b.title.toLowerCase().includes(searchQuery.toLowerCase())
+      
+      if (aTitle && !bTitle) return -1
+      if (!aTitle && bTitle) return 1
+      return 0
+    })
+
+    setResults(searchResults)
+    setLoading(false)
+  }, [])
+
+  useEffect(() => {
     // 実際の検索のような遅延を模擬
-    const searchTimeout = setTimeout(performSearch, 300)
+    const searchTimeout = setTimeout(() => performSearch(query), 300)
     
     return () => clearTimeout(searchTimeout)
-  }, [query])
+  }, [query, performSearch])
 
   // カテゴリフィルタリング処理
   useEffect(() => {
@@ -131,18 +131,18 @@ function SearchResults() {
   }, [results, selectedCategory])
 
   // ページネーション用の現在のページのアイテムを取得
-  const getCurrentPageItems = () => {
+  const getCurrentPageItems = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
     return filteredResults.slice(startIndex, endIndex)
-  }
+  }, [filteredResults, currentPage, itemsPerPage])
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
 
-  const highlightText = (text: string, query: string) => {
+  const highlightText = useCallback((text: string, query: string) => {
     if (!query.trim()) return text
     
     const regex = new RegExp(`(${query})`, 'gi')
@@ -153,7 +153,9 @@ function SearchResults() {
         <mark key={index} className="search-highlight">{part}</mark> : 
         part
     )
-  }
+  }, [])
+
+  const currentPageItems = getCurrentPageItems
 
   if (loading) {
     return (
@@ -223,7 +225,7 @@ function SearchResults() {
         ) : (
           <>
             <div className="results-list">
-              {getCurrentPageItems().map((result) => (
+              {currentPageItems.map((result) => (
                 <div key={result.id} className="result-item">
                   <h3 className="result-title">
                     <Link to={result.path}>
@@ -254,6 +256,6 @@ function SearchResults() {
       </div>
     </div>
   )
-}
+})
 
 export default SearchResults

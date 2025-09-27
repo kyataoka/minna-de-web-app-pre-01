@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, memo } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,7 +8,7 @@ interface ModalProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-const Modal: React.FC<ModalProps> = ({
+const Modal: React.FC<ModalProps> = memo(({
   isOpen,
   onClose,
   title,
@@ -27,13 +27,19 @@ const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
+  const handleEscape = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose();
+    }
+  }, [onClose]);
 
+  const handleBackdropClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  }, [onClose]);
+
+  useEffect(() => {
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
     }
@@ -41,15 +47,9 @@ const Modal: React.FC<ModalProps> = ({
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, handleEscape]);
 
   if (!isOpen) return null;
-
-  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
-  };
 
   return (
     <div className="modal-overlay" onClick={handleBackdropClick}>
@@ -70,6 +70,6 @@ const Modal: React.FC<ModalProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default Modal;

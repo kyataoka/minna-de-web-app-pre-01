@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from 'react'
+import { useState, useEffect, useCallback, type FormEvent } from 'react'
 import Modal from '../Modal'
 
 interface ValidationErrors {
@@ -34,7 +34,7 @@ function Contact() {
     localStorage.setItem('contactFormData', JSON.stringify(formData))
   }, [formData])
 
-  const validateField = (name: string, value: string): string | undefined => {
+  const validateField = useCallback((name: string, value: string): string | undefined => {
     switch (name) {
       case 'name':
         if (!value.trim()) return '名前は必須項目です'
@@ -53,9 +53,9 @@ function Contact() {
       default:
         return undefined
     }
-  }
+  }, [])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
@@ -67,9 +67,9 @@ function Contact() {
       ...prev,
       [name]: error
     }))
-  }
+  }, [validateField])
 
-  const validateForm = (): boolean => {
+  const validateForm = useCallback((): boolean => {
     const newErrors: ValidationErrors = {}
     
     newErrors.name = validateField('name', formData.name)
@@ -79,9 +79,9 @@ function Contact() {
     setErrors(newErrors)
     
     return !Object.values(newErrors).some(error => error !== undefined)
-  }
+  }, [formData.name, formData.email, formData.message, validateField])
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = useCallback((e: FormEvent) => {
     e.preventDefault()
     
     if (!validateForm()) {
@@ -90,9 +90,9 @@ function Contact() {
     }
     
     setIsConfirmModalOpen(true)
-  }
+  }, [validateForm])
 
-  const handleConfirmSubmit = () => {
+  const handleConfirmSubmit = useCallback(() => {
     console.log('フォームデータ:', formData)
     setIsConfirmModalOpen(false)
     setIsSuccessModalOpen(true)
@@ -103,7 +103,8 @@ function Contact() {
       message: ''
     })
     localStorage.removeItem('contactFormData')
-  }
+  }, [formData])
+
 
   return (
     <main className="main-content">

@@ -1,25 +1,30 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import AppBar from './AppBar'
-import Home from './pages/Home'
-import Features from './pages/Features'
-import FeaturesAdvanced from './pages/FeaturesAdvanced'
-import FeaturesApi from './pages/FeaturesApi'
-import Contact from './pages/Contact'
-import SearchResults from './pages/SearchResults'
+
+// 遅延読み込みでコンポーネントを最適化
+const Home = lazy(() => import('./pages/Home'))
+const Features = lazy(() => import('./pages/Features'))
+const FeaturesAdvanced = lazy(() => import('./pages/FeaturesAdvanced'))
+const FeaturesApi = lazy(() => import('./pages/FeaturesApi'))
+const Contact = lazy(() => import('./pages/Contact'))
+const SearchResults = lazy(() => import('./pages/SearchResults'))
 
 function App() {
   return (
     <Router>
       <div>
         <AppBar title="Hello World App" />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/features" element={<Features />} />
-          <Route path="/features/advanced" element={<FeaturesAdvanced />} />
-          <Route path="/features/api" element={<FeaturesApi />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/search" element={<SearchResults />} />
-        </Routes>
+        <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>読み込み中...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/features/advanced" element={<FeaturesAdvanced />} />
+            <Route path="/features/api" element={<FeaturesApi />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/search" element={<SearchResults />} />
+          </Routes>
+        </Suspense>
       </div>
     </Router>
   )
