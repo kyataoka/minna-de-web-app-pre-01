@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useCallback, useMemo } from 'react'
 import SearchBox from './SearchBox'
+import ThemeToggle from './components/ThemeToggle'
 
 interface AppBarProps {
   title?: string;
@@ -44,6 +45,9 @@ function AppBar({ title = "My App" }: AppBarProps) {
         <div className="search-container">
           <SearchBox />
         </div>
+        
+        {/* テーマ切り替えボタン */}
+        <ThemeToggle />
         
         {/* ハンバーガーメニューボタン */}
         <button 
