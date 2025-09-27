@@ -6,6 +6,7 @@ interface SearchResult {
   title: string;
   content: string;
   path: string;
+  category: string;
 }
 
 const searchData: SearchResult[] = [
@@ -13,57 +14,69 @@ const searchData: SearchResult[] = [
     id: '1',
     title: 'ホーム',
     content: 'ホームページへようこそ。このアプリケーションの基本的な機能を紹介しています。',
-    path: '/'
+    path: '/',
+    category: 'ページ'
   },
   {
     id: '2',
     title: '機能一覧',
     content: 'アプリケーションの機能一覧です。基本的な機能から高度な機能まで幅広く提供しています。',
-    path: '/features'
+    path: '/features',
+    category: 'ページ'
   },
   {
     id: '3',
     title: '高度な機能',
     content: '高度な機能ページです。プロフェッショナルユーザー向けの機能を紹介しています。',
-    path: '/features/advanced'
+    path: '/features/advanced',
+    category: 'ページ'
   },
   {
     id: '4',
     title: 'API機能',
     content: 'API機能のページです。開発者向けのAPI仕様と使用方法を説明しています。',
-    path: '/features/api'
+    path: '/features/api',
+    category: 'ページ'
   },
   {
     id: '5',
     title: 'お問い合わせ',
     content: 'お問い合わせページです。ご質問やご要望がございましたらこちらからご連絡ください。',
-    path: '/contact'
+    path: '/contact',
+    category: 'ページ'
   },
   {
     id: '6',
     title: 'モーダル機能',
     content: 'モーダルダイアログ機能。ユーザーインターフェースを向上させる重要な機能です。',
-    path: '/'
+    path: '/',
+    category: 'UI機能'
   },
   {
     id: '7',
     title: 'ナビゲーション',
     content: 'レスポンシブ対応のナビゲーションシステム。ハンバーガーメニューとドロップダウンメニュー機能付き。',
-    path: '/'
+    path: '/',
+    category: 'UI機能'
   },
   {
     id: '8',
     title: 'フォーム機能',
     content: 'バリデーション機能付きのフォーム。リアルタイムエラーチェックとローカルストレージ保存機能。',
-    path: '/contact'
+    path: '/contact',
+    category: 'UI機能'
   }
 ]
 
 function SearchResults() {
   const [searchParams] = useSearchParams()
   const [results, setResults] = useState<SearchResult[]>([])
+  const [filteredResults, setFilteredResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState<string>('すべて')
   const query = searchParams.get('q') || ''
+  
+  const categories = ['すべて', ...Array.from(new Set(searchData.map(item => item.category)))]
 
   useEffect(() => {
     const performSearch = () => {
@@ -104,6 +117,15 @@ function SearchResults() {
     return () => clearTimeout(searchTimeout)
   }, [query])
 
+  // カテゴリフィルタリング処理
+  useEffect(() => {
+    if (selectedCategory === 'すべて') {
+      setFilteredResults(results)
+    } else {
+      setFilteredResults(results.filter(result => result.category === selectedCategory))
+    }
+  }, [results, selectedCategory])
+
   const highlightText = (text: string, query: string) => {
     if (!query.trim()) return text
     
@@ -136,7 +158,29 @@ function SearchResults() {
         {query && (
           <p className="search-query">
             「<strong>{query}</strong>」の検索結果: {results.length}件
+            {selectedCategory !== 'すべて' && ` (「${selectedCategory}」カテゴリでフィルタリング中: ${filteredResults.length}件)`}
           </p>
+        )}
+
+        {query && results.length > 0 && (
+          <div className="filter-section">
+            <h3>カテゴリで絞り込み:</h3>
+            <div className="category-filters">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  className={`filter-button ${selectedCategory === category ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                  {category === 'すべて' 
+                    ? ` (${results.length})`
+                    : ` (${results.filter(r => r.category === category).length})`
+                  }
+                </button>
+              ))}
+            </div>
+          </div>
         )}
 
         {!query ? (
@@ -155,14 +199,20 @@ function SearchResults() {
               </ul>
             </div>
           </div>
+        ) : filteredResults.length === 0 ? (
+          <div className="no-results">
+            <p>「{selectedCategory}」カテゴリには「{query}」に一致する結果がありません。</p>
+            <p>別のカテゴリを選択するか、フィルタを「すべて」に戻してください。</p>
+          </div>
         ) : (
           <div className="results-list">
-            {results.map((result) => (
+            {filteredResults.map((result) => (
               <div key={result.id} className="result-item">
                 <h3 className="result-title">
                   <Link to={result.path}>
                     {highlightText(result.title, query)}
                   </Link>
+                  <span className="result-category">{result.category}</span>
                 </h3>
                 <p className="result-content">
                   {highlightText(result.content, query)}

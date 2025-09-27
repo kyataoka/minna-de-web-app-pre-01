@@ -614,3 +614,102 @@ body {
     font-size: 14px;
   }
 }
+
+/* フィルタリング機能のスタイル */
+.filter-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.filter-section h3 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-button {
+  padding: 8px 16px;
+  border: 2px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.filter-button:hover {
+  background-color: #007bff;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.filter-button.active {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+}
+
+.filter-button.active:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.result-category {
+  display: inline-block;
+  margin-left: 1rem;
+  padding: 4px 12px;
+  background-color: #e9ecef;
+  color: #495057;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 12px;
+  vertical-align: middle;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .filter-section {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .category-filters {
+    gap: 0.4rem;
+  }
+  
+  .filter-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .result-category {
+    display: block;
+    margin: 0.5rem 0 0 0;
+    width: fit-content;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-section h3 {
+    font-size: 1rem;
+  }
+  
+  .filter-button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+}
