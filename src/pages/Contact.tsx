@@ -37,11 +37,12 @@ function Contact() {
         if (!value.trim()) return '名前は必須項目です'
         if (value.trim().length < 2) return '名前は2文字以上で入力してください'
         return undefined
-      case 'email':
+      case 'email': {
         if (!value.trim()) return 'メールアドレスは必須項目です'
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailRegex.test(value)) return '正しいメールアドレスの形式で入力してください'
         return undefined
+      }
       case 'message':
         if (!value.trim()) return 'メッセージは必須項目です'
         if (value.trim().length < 10) return 'メッセージは10文字以上で入力してください'
