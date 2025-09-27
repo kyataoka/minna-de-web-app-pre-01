@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import Pagination from '../Pagination'
 
 interface SearchResult {
   id: string;
@@ -74,6 +75,8 @@ function SearchResults() {
   const [filteredResults, setFilteredResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string>('すべて')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
   const query = searchParams.get('q') || ''
   
   const categories = ['すべて', ...Array.from(new Set(searchData.map(item => item.category)))]
@@ -124,7 +127,20 @@ function SearchResults() {
     } else {
       setFilteredResults(results.filter(result => result.category === selectedCategory))
     }
+    setCurrentPage(1) // フィルタリング時はページを1に戻す
   }, [results, selectedCategory])
+
+  // ページネーション用の現在のページのアイテムを取得
+  const getCurrentPageItems = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    return filteredResults.slice(startIndex, endIndex)
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   const highlightText = (text: string, query: string) => {
     if (!query.trim()) return text
@@ -205,26 +221,35 @@ function SearchResults() {
             <p>別のカテゴリを選択するか、フィルタを「すべて」に戻してください。</p>
           </div>
         ) : (
-          <div className="results-list">
-            {filteredResults.map((result) => (
-              <div key={result.id} className="result-item">
-                <h3 className="result-title">
-                  <Link to={result.path}>
-                    {highlightText(result.title, query)}
-                  </Link>
-                  <span className="result-category">{result.category}</span>
-                </h3>
-                <p className="result-content">
-                  {highlightText(result.content, query)}
-                </p>
-                <p className="result-path">
-                  <Link to={result.path} className="result-link">
-                    {window.location.origin}{result.path}
-                  </Link>
-                </p>
-              </div>
-            ))}
-          </div>
+          <>
+            <div className="results-list">
+              {getCurrentPageItems().map((result) => (
+                <div key={result.id} className="result-item">
+                  <h3 className="result-title">
+                    <Link to={result.path}>
+                      {highlightText(result.title, query)}
+                    </Link>
+                    <span className="result-category">{result.category}</span>
+                  </h3>
+                  <p className="result-content">
+                    {highlightText(result.content, query)}
+                  </p>
+                  <p className="result-path">
+                    <Link to={result.path} className="result-link">
+                      {window.location.origin}{result.path}
+                    </Link>
+                  </p>
+                </div>
+              ))}
+            </div>
+            
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredResults.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+            />
+          </>
         )}
       </div>
     </div>
