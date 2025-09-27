@@ -1,4 +1,5 @@
 import { useState, useEffect, type FormEvent } from 'react'
+import Modal from '../Modal'
 
 interface ValidationErrors {
   name?: string
@@ -14,6 +15,8 @@ function Contact() {
   })
   
   const [errors, setErrors] = useState<ValidationErrors>({})
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
 
   useEffect(() => {
     const savedData = localStorage.getItem('contactFormData')
@@ -86,8 +89,13 @@ function Contact() {
       return
     }
     
+    setIsConfirmModalOpen(true)
+  }
+
+  const handleConfirmSubmit = () => {
     console.log('フォームデータ:', formData)
-    alert(`お名前: ${formData.name}\nメール: ${formData.email}\nメッセージ: ${formData.message}`)
+    setIsConfirmModalOpen(false)
+    setIsSuccessModalOpen(true)
     
     setFormData({
       name: '',
@@ -147,6 +155,57 @@ function Contact() {
         <br />
         <button type="submit" className="hover-button">送信</button>
       </form>
+
+      {/* 送信確認モーダル */}
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        title="送信確認"
+        size="medium"
+      >
+        <div>
+          <p>以下の内容で送信しますか？</p>
+          <div style={{ backgroundColor: '#f8f9fa', padding: '1rem', borderRadius: '8px', margin: '1rem 0' }}>
+            <p><strong>お名前:</strong> {formData.name}</p>
+            <p><strong>メールアドレス:</strong> {formData.email}</p>
+            <p><strong>メッセージ:</strong></p>
+            <p style={{ whiteSpace: 'pre-wrap', marginLeft: '1rem' }}>{formData.message}</p>
+          </div>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+            <button 
+              className="hover-button" 
+              onClick={() => setIsConfirmModalOpen(false)}
+              style={{ backgroundColor: '#6c757d' }}
+            >
+              キャンセル
+            </button>
+            <button className="hover-button" onClick={handleConfirmSubmit}>
+              送信する
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 送信完了モーダル */}
+      <Modal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        title="送信完了"
+        size="small"
+      >
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '3rem', color: '#28a745', marginBottom: '1rem' }}>✓</div>
+          <p>お問い合わせありがとうございます！</p>
+          <p>内容を確認次第、ご連絡いたします。</p>
+          <button 
+            className="hover-button" 
+            onClick={() => setIsSuccessModalOpen(false)}
+            style={{ marginTop: '1rem' }}
+          >
+            閉じる
+          </button>
+        </div>
+      </Modal>
     </main>
   )
 }
