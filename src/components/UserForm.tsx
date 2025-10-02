@@ -7,6 +7,12 @@ interface FormData {
   message: string;
 }
 
+interface ValidationErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
 const UserForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -14,16 +20,71 @@ const UserForm: React.FC = () => {
     message: ''
   });
 
+  const [errors, setErrors] = useState<ValidationErrors>({});
+
+  const validateField = (name: string, value: string): string | undefined => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return '名前は必須項目です';
+        if (value.trim().length < 2) return '名前は2文字以上で入力してください';
+        if (value.trim().length > 50) return '名前は50文字以下で入力してください';
+        if (!/^[a-zA-Zひらがなカタカナ漢字\s]+$/.test(value.trim())) return '名前には英字、ひらがな、カタカナ、漢字のみ使用できます';
+        break;
+      case 'email':
+        if (!value.trim()) return 'メールアドレスは必須項目です';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value.trim())) return '正しいメールアドレスの形式で入力してください';
+        if (value.length > 254) return 'メールアドレスは254文字以下で入力してください';
+        break;
+      case 'message':
+        if (!value.trim()) return 'メッセージは必須項目です';
+        if (value.trim().length < 10) return 'メッセージは10文字以上で入力してください';
+        if (value.trim().length > 1000) return 'メッセージは1000文字以下で入力してください';
+        break;
+    }
+    return undefined;
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+
+    // リアルタイムバリデーション
+    const error = validateField(name, value);
+    setErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
+  };
+
+  const validateAllFields = (): boolean => {
+    const newErrors: ValidationErrors = {};
+    let isValid = true;
+
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key as keyof FormData]);
+      if (error) {
+        newErrors[key as keyof ValidationErrors] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateAllFields()) {
+      alert('入力項目にエラーがあります。確認してください。');
+      return;
+    }
+
     console.log('フォームデータ:', formData);
     alert(`入力データ:\n名前: ${formData.name}\nメール: ${formData.email}\nメッセージ: ${formData.message}`);
   };
@@ -34,6 +95,7 @@ const UserForm: React.FC = () => {
       email: '',
       message: ''
     });
+    setErrors({});
   };
 
   return (
@@ -48,9 +110,10 @@ const UserForm: React.FC = () => {
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            required
+            className={errors.name ? 'error' : ''}
             placeholder="お名前を入力してください"
           />
+          {errors.name && <span className="error-message">{errors.name}</span>}
         </div>
         
         <div className="form-group">
@@ -61,9 +124,10 @@ const UserForm: React.FC = () => {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            required
+            className={errors.email ? 'error' : ''}
             placeholder="example@email.com"
           />
+          {errors.email && <span className="error-message">{errors.email}</span>}
         </div>
         
         <div className="form-group">
@@ -73,14 +137,21 @@ const UserForm: React.FC = () => {
             name="message"
             value={formData.message}
             onChange={handleInputChange}
-            required
+            className={errors.message ? 'error' : ''}
             placeholder="メッセージを入力してください"
             rows={5}
           />
+          {errors.message && <span className="error-message">{errors.message}</span>}
         </div>
         
         <div className="form-buttons">
-          <button type="submit" className="submit-btn">送信</button>
+          <button 
+            type="submit" 
+            className="submit-btn"
+            disabled={Object.keys(errors).some(key => errors[key as keyof ValidationErrors])}
+          >
+            送信
+          </button>
           <button type="button" onClick={handleReset} className="reset-btn">リセット</button>
         </div>
       </form>
