@@ -16,6 +16,7 @@
   height: 64px;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
 }
 
 .app-bar-title {
@@ -25,7 +26,7 @@
   color: white;
 }
 
-.app-bar-nav {
+.desktop-nav {
   display: flex;
   gap: 16px;
 }
@@ -40,6 +41,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   transition: background-color 0.2s ease;
+  text-decoration: none;
 }
 
 .nav-button:hover {
@@ -50,17 +52,103 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 2px;
+  background-color: white;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburger-line.open:nth-child(1) {
+  transform: rotate(45deg) translateY(6px);
+}
+
+.hamburger-line.open:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-line.open:nth-child(3) {
+  transform: rotate(-45deg) translateY(-6px);
+}
+
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #1976d2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 8px 8px;
+  padding: 16px;
+  min-width: 200px;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1001;
+}
+
+.mobile-nav.open {
+  display: flex;
+}
+
+.mobile-nav-button {
+  color: white;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.mobile-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
 @media (max-width: 768px) {
   .app-bar-content {
     padding: 0 16px;
   }
   
-  .app-bar-nav {
-    gap: 8px;
+  .desktop-nav {
+    display: none;
   }
   
-  .nav-button {
-    padding: 6px 12px;
-    font-size: 0.8rem;
+  .hamburger-menu {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-nav {
+    display: none !important;
+  }
+  
+  .menu-overlay {
+    display: none;
   }
 }
