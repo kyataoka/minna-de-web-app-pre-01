@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './UserForm.css';
 
 interface FormData {
@@ -21,6 +21,39 @@ const UserForm: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<ValidationErrors>({});
+
+  // ローカルストレージのキー
+  const STORAGE_KEY = 'userFormData';
+
+  // ローカルストレージに保存する関数
+  const saveToLocalStorage = (data: FormData) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (error) {
+      console.error('ローカルストレージへの保存に失敗しました:', error);
+    }
+  };
+
+  // ローカルストレージから読み込む関数
+  const loadFromLocalStorage = (): FormData | null => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (error) {
+      console.error('ローカルストレージからの読み込みに失敗しました:', error);
+    }
+    return null;
+  };
+
+  // コンポーネント初期化時にローカルストレージから復元
+  useEffect(() => {
+    const savedData = loadFromLocalStorage();
+    if (savedData) {
+      setFormData(savedData);
+    }
+  }, []);
 
   const validateField = (name: string, value: string): string | undefined => {
     switch (name) {
@@ -48,10 +81,15 @@ const UserForm: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
-    setFormData(prev => ({
-      ...prev,
+    const newFormData = {
+      ...formData,
       [name]: value
-    }));
+    };
+    
+    setFormData(newFormData);
+    
+    // ローカルストレージに保存
+    saveToLocalStorage(newFormData);
 
     // リアルタイムバリデーション
     const error = validateField(name, value);
@@ -90,12 +128,21 @@ const UserForm: React.FC = () => {
   };
 
   const handleReset = () => {
-    setFormData({
+    const emptyFormData = {
       name: '',
       email: '',
       message: ''
-    });
+    };
+    
+    setFormData(emptyFormData);
     setErrors({});
+    
+    // ローカルストレージからも削除
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      console.error('ローカルストレージからの削除に失敗しました:', error);
+    }
   };
 
   return (
