@@ -44,8 +44,8 @@ const ProductSection = () => {
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-subtitle">{product.subtitle}</p>
                 <div className="product-actions">
-                  <a href="/" className="link-primary">Learn more</a>
-                  <a href="/" className="link-secondary">Buy</a>
+                  <a href="/minna-de-web-app-pre-01/" className="link-primary">Learn more</a>
+                  <a href="/minna-de-web-app-pre-01/" className="link-secondary">Buy</a>
                 </div>
               </div>
             </div>
