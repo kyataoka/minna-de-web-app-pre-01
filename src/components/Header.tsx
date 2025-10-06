@@ -4,7 +4,7 @@ const Header = () => {
       <nav className="nav">
         <div className="nav-content">
           <div className="logo">
-            <a href="/">
+            <a href="/minna-de-web-app-pre-01/">
               <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor">
                 <path d="M10.2 0c-1.4.6-2.9 1.2-4.2 2.2C5.1 3.1 4.6 4 4.8 5.2c.2 1.3 1.3 2.3 2.6 2.7 1.4.4 2.9-.1 4-1 .9-.7 1.4-1.8 1.2-2.9-.1-1.1-.8-2-1.8-2.5C10.5.3 10.4.1 10.2 0z"/>
                 <path d="M12.8 5.8c-1.8 0-3.2.8-4.2.8s-2.6-.8-4.4-.8C2.3 5.8.8 7 .1 9.1c-1.4 4.2.4 10.4 2.8 13.8 1.2 1.7 2.6 3.6 4.5 3.5 1.8-.1 2.5-1.2 4.6-1.2s2.7 1.1 4.6 1.2c1.9.1 3.2-1.7 4.4-3.4 1.4-2 1.9-3.9 2-4.1-.1 0-3.8-1.4-3.9-5.6-.1-3.5 2.9-5.2 3-5.3-1.6-2.4-4.2-2.7-5.1-2.7z"/>
@@ -13,16 +13,16 @@ const Header = () => {
           </div>
           
           <ul className="nav-menu">
-            <li><a href="/">Mac</a></li>
-            <li><a href="/">iPad</a></li>
-            <li><a href="/">iPhone</a></li>
-            <li><a href="/">Watch</a></li>
-            <li><a href="/">Vision</a></li>
-            <li><a href="/">AirPods</a></li>
-            <li><a href="/">TV & Home</a></li>
-            <li><a href="/">Entertainment</a></li>
-            <li><a href="/">Accessories</a></li>
-            <li><a href="/">Support</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">Mac</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">iPad</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">iPhone</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">Watch</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">Vision</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">AirPods</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">TV & Home</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">Entertainment</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">Accessories</a></li>
+            <li><a href="/minna-de-web-app-pre-01/">Support</a></li>
           </ul>
           
           <div className="nav-icons">
